@@ -15,7 +15,7 @@ export default function Header() {
       className="flex px-5 py-4 text-gray-800 bg-white border"
       aria-label="Breadcrumb"
     >
-      <ol className="inline-flex items-center space-x-1 md:space-x-3 text-xl font-medium">
+      <ol className="inline-flex items-center text-xl font-medium">
         {/* Always show Home as the starting point */}
         <li className="inline-flex items-center">
           <Link
