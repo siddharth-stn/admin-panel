@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function SidePanel() {
   return (
     <>
@@ -26,7 +28,7 @@ export default function SidePanel() {
 
       <aside
         id="default-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        className="fixed top-0 left-0 z-40 w-full h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidenav"
       >
         <div className="overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -44,15 +46,23 @@ export default function SidePanel() {
           </ul>
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
             <li>
-              <a
-                href="#"
+              <Link
+                to="/"
                 className="flex items-center p-2 text-[15px] font-bold text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <span className="ml-3">Dashboard</span>
-              </a>
+              </Link>
             </li>
           </ul>
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700 text-[15px] font-bold">
+            <li>
+              <Link
+                to="/testimonial"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <span className="ml-3">Testimonial</span>
+              </Link>
+            </li>
             <li>
               <a
                 href="#"

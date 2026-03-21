@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <nav
-      className="flex px-5 py-4 text-gray-800 bg-white"
+      className="flex px-5 py-4 text-gray-800 bg-white border"
       aria-label="Breadcrumb"
     >
       <ol className="inline-flex items-center space-x-1 md:space-x-3 text-xl font-medium">
@@ -22,7 +22,7 @@ export default function Header() {
             to="/"
             className="inline-flex items-center hover:text-blue-600 transition-colors"
           >
-            Home
+            Dashboard
           </Link>
         </li>
 
