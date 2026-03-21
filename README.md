@@ -12,12 +12,13 @@ This admin panel is being built from the ground up to demonstrate real-world fro
 
 ### Current Status
 
-The project is in its **early stage** with the foundational structure in place:
+The project is in its **early stage** with the foundational structure and routing in place:
 
 - Layout-based routing using React Router 7
 - A `CommonLayout` component with a grid-based structure (side panel + header + content area)
-- Placeholder `Header` and `SidePanel` components ready to be built out
-- A `Homepage` component rendering inside the layout
+- A `SidePanel` with `Link`-based navigation to all pages
+- A `Header` with dynamic breadcrumb navigation based on the current URL
+- Multiple page routes: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
 
 ### Project Structure
@@ -30,10 +31,18 @@ src/
 ├── components/
 │   ├── CommonLayout.jsx            # Grid layout (sidebar + header + outlet)
 │   └── common/
-│       ├── Header.jsx              # Header component
-│       └── SidePanel.jsx           # Side panel / navigation
+│       ├── Header.jsx              # Dynamic breadcrumb navigation
+│       └── SidePanel.jsx           # Sidebar with Link-based navigation
 └── pages/
-    └── Homepage.jsx                # Homepage
+    ├── Dashboard.jsx               # Dashboard (home page)
+    ├── Testimonial.jsx             # Testimonial page
+    ├── Choice.jsx                  # Why Choose Us page
+    ├── Colour.jsx                  # Colour page
+    ├── Material.jsx                # Material page
+    ├── Category.jsx                # Category page
+    ├── SubCategory.jsx             # Sub Category page
+    ├── SubSubCategory.jsx          # Sub Sub Category page
+    └── Product.jsx                 # Product page
 ```
 
 ### Tech Stack
