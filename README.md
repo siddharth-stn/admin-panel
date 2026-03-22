@@ -16,9 +16,10 @@ The project is in its **early stage** with the foundational structure and routin
 
 - Layout-based routing using React Router 7
 - A `CommonLayout` component with a grid-based structure (side panel + header + content area)
-- A `SidePanel` with `NavLink`-based navigation, active route highlighting, and lucide-react icons
+- A `SidePanel` with `NavLink`-based navigation, active route highlighting, lucide-react icons, and collapsible sub-menus (using `useState`)
 - A `Header` with dynamic breadcrumb navigation based on the current URL
 - A `Dashboard` page with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
+- Collapsible sidebar sections for Testimonial (Add/View) and Why Choose Us (Add/View) with nested routes
 - Multiple page routes: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
 - Code comments added throughout layout, routing, and navigation files for readability
@@ -37,8 +38,12 @@ src/
 │       └── SidePanel.jsx           # Sidebar with NavLink active styling + icons
 └── pages/
     ├── Dashboard.jsx               # Dashboard with overview stat cards
-    ├── Testimonial.jsx             # Testimonial page
-    ├── Choice.jsx                  # Why Choose Us page
+    ├── testimonial/
+    │   ├── AddTestimonial.jsx      # Add Testimonial page
+    │   └── ViewTestimonial.jsx     # View Testimonials page
+    ├── choice/
+    │   ├── AddWhyChoose.jsx        # Add Why Choose Us page
+    │   └── ViewWhyChoose.jsx       # View Why Choose Us page
     ├── Colour.jsx                  # Colour page
     ├── Material.jsx                # Material page
     ├── Category.jsx                # Category page

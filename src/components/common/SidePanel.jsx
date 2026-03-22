@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 import {
   Quote,
   ShieldCheck,
@@ -10,6 +10,7 @@ import {
   Box,
   UserPen,
 } from "lucide-react";
+import { useState } from "react";
 
 /**
  * SidePanel — sidebar navigation displayed on every page.
@@ -22,6 +23,16 @@ import {
  *      - Page navigation links (Testimonial, Choice, Colour, etc.)
  */
 export default function SidePanel() {
+  // Tracks which collapsible menus are open (e.g., { testimonial: true, choice: false })
+  const [openMenus, setOpenMenus] = useState({ testimonial: false });
+
+  // Toggles a menu's open/closed state by name
+  function handleClick(menuName) {
+    setOpenMenus((prev) => {
+      return { ...prev, [menuName]: !prev[menuName] };
+    });
+  }
+
   return (
     <>
       {/* Hamburger button — toggles sidebar visibility on mobile (sm:hidden) */}
@@ -41,8 +52,8 @@ export default function SidePanel() {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            clip-rule="evenodd"
-            fill-rule="evenodd"
+            clipRule="evenodd"
+            fillRule="evenodd"
             d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
           ></path>
         </svg>
@@ -87,41 +98,89 @@ export default function SidePanel() {
             </li>
           </ul>
 
-          {/* Page navigation links */}
+          {/* Page navigation links — some items have collapsible sub-menus */}
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700 text-[15px] font-bold">
+            {/* Testimonial — collapsible menu with Add/View sub-links */}
             <li>
-              <NavLink
-                to="/testimonial"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg group ${
-                    isActive
-                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
-                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`
-                }
+              <div
+                onClick={() => handleClick("testimonial")}
+                className="flex items-center p-2 rounded-lg group cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="ml-3 flex gap-2">
                   <Quote className="rotate-180" size={15} />
                   Testimonial
                 </span>
-              </NavLink>
+              </div>
+              <div
+                className={`testimonial-subMenu-wrapper mt-2 ml-9 ${openMenus.testimonial ? "block" : "hidden"}`}
+              >
+                <NavLink
+                  to="/testimonial/add-testimonial"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group  ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">Add Testimonial</span>
+                </NavLink>
+                <NavLink
+                  to="/testimonial/view-testimonial"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">View Testimonial</span>
+                </NavLink>
+              </div>
             </li>
+            {/* Why Choose Us — collapsible menu with Add/View sub-links */}
             <li>
-              <NavLink
-                to="/choice"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg group ${
-                    isActive
-                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
-                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`
-                }
+              <div
+                onClick={() => {
+                  handleClick("choice");
+                }}
+                className="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="ml-3 flex gap-2 items-center">
                   <ShieldCheck size={20} />
                   Why Choose us
                 </span>
-              </NavLink>
+              </div>
+              <div
+                className={`testimonial-subMenu-wrapper mt-2 ml-9 ${openMenus.choice ? "block" : "hidden"}`}
+              >
+                <NavLink
+                  to="/choice/add-why-choose"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group  ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">Add Why Choose Us</span>
+                </NavLink>
+                <NavLink
+                  to="/choice/view-why-choose"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">View Why Choose Us</span>
+                </NavLink>
+              </div>
             </li>
             <li>
               <NavLink
