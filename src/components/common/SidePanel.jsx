@@ -182,107 +182,257 @@ export default function SidePanel() {
                 </NavLink>
               </div>
             </li>
+            {/* Colour — collapsible menu with Add/View sub-links */}
             <li>
-              <NavLink
-                to="/colour"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg group ${
-                    isActive
-                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
-                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`
-                }
+              <div
+                onClick={() => {
+                  handleClick("colour");
+                }}
+                className="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="ml-3 flex gap-2 items-center">
-                  <Palette sixe={20} />
+                  <Palette size={20} />
                   Colour
                 </span>
-              </NavLink>
+              </div>
+              <div
+                className={`colour-subMenu-wrapper mt-2 ml-9 ${openMenus.colour ? "block" : "hidden"}`}
+              >
+                <NavLink
+                  to="/colour/add-colour"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">Add Colour</span>
+                </NavLink>
+                <NavLink
+                  to="/colour/view-colour"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">View Colour</span>
+                </NavLink>
+              </div>
             </li>
+            {/* Material — collapsible menu with Add/View sub-links */}
             <li>
-              <NavLink
-                to="/material"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg group ${
-                    isActive
-                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
-                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`
-                }
+              <div
+                onClick={() => {
+                  handleClick("material");
+                }}
+                className="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="ml-3 flex gap-2 items-center">
                   <Atom size={20} />
                   Material
                 </span>
-              </NavLink>
+              </div>
+              <div
+                className={`material-subMenu-wrapper mt-2 ml-9 ${openMenus.material ? "block" : "hidden"}`}
+              >
+                <NavLink
+                  to="/material/add-material"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">Add Material</span>
+                </NavLink>
+                <NavLink
+                  to="/material/view-material"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">View Material</span>
+                </NavLink>
+              </div>
             </li>
+            {/* Category — collapsible menu with Add/View sub-links */}
             <li>
-              <NavLink
-                to="/category"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg group ${
-                    isActive
-                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
-                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`
-                }
+              <div
+                onClick={() => {
+                  handleClick("category");
+                }}
+                className="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="ml-3 flex gap-2 items-center">
                   <ChartBarStacked size={20} />
                   Category
                 </span>
-              </NavLink>
+              </div>
+              <div
+                className={`category-subMenu-wrapper mt-2 ml-9 ${openMenus.category ? "block" : "hidden"}`}
+              >
+                <NavLink
+                  to="/category/add-category"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">Add Category</span>
+                </NavLink>
+                <NavLink
+                  to="/category/view-category"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">View Category</span>
+                </NavLink>
+              </div>
             </li>
+            {/* Sub Category — collapsible menu with Add/View sub-links */}
             <li>
-              <NavLink
-                to="/sub-category"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg group ${
-                    isActive
-                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
-                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`
-                }
+              <div
+                onClick={() => {
+                  handleClick("sub-category");
+                }}
+                className="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="ml-3 flex gap-2 items-center">
                   <Blocks size={20} />
                   Sub Category
                 </span>
-              </NavLink>
+              </div>
+              <div
+                className={`sub-category-subMenu-wrapper mt-2 ml-9 ${openMenus["sub-category"] ? "block" : "hidden"}`}
+              >
+                <NavLink
+                  to="/sub-category/add-sub-category"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">Add Sub Category</span>
+                </NavLink>
+                <NavLink
+                  to="/sub-category/view-sub-category"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">View Sub Category</span>
+                </NavLink>
+              </div>
             </li>
+            {/* Sub Sub Category — collapsible menu with Add/View sub-links */}
             <li>
-              <NavLink
-                to="/sub-sub-category"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg group ${
-                    isActive
-                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
-                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`
-                }
+              <div
+                onClick={() => {
+                  handleClick("sub-sub-category");
+                }}
+                className="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="ml-3 flex gap-2 items-center">
                   <FileBox size={20} />
                   Sub Sub Category
                 </span>
-              </NavLink>
+              </div>
+              <div
+                className={`sub-sub-category-subMenu-wrapper mt-2 ml-9 ${openMenus["sub-sub-category"] ? "block" : "hidden"}`}
+              >
+                <NavLink
+                  to="/sub-sub-category/add-sub-sub-category"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">Add Sub Sub Category</span>
+                </NavLink>
+                <NavLink
+                  to="/sub-sub-category/view-sub-sub-category"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">View Sub Sub Category</span>
+                </NavLink>
+              </div>
             </li>
+            {/* Product — collapsible menu with Add/View sub-links */}
             <li>
-              <NavLink
-                to="/product"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg group ${
-                    isActive
-                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
-                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`
-                }
+              <div
+                onClick={() => {
+                  handleClick("product");
+                }}
+                className="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="ml-3 flex gap-2 items-center">
                   <Box size={20} />
                   Product
                 </span>
-              </NavLink>
+              </div>
+              <div
+                className={`product-subMenu-wrapper mt-2 ml-9 ${openMenus.product ? "block" : "hidden"}`}
+              >
+                <NavLink
+                  to="/product/add-product"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">Add Product</span>
+                </NavLink>
+                <NavLink
+                  to="/product/view-product"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg group ${
+                      isActive
+                        ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                        : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  <span className="">View Product</span>
+                </NavLink>
+              </div>
             </li>
           </ul>
         </div>

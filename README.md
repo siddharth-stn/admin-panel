@@ -19,8 +19,8 @@ The project is in its **early stage** with the foundational structure and routin
 - A `SidePanel` with `NavLink`-based navigation, active route highlighting, lucide-react icons, and collapsible sub-menus (using `useState`)
 - A `Header` with dynamic breadcrumb navigation based on the current URL
 - A `Dashboard` page with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
-- Collapsible sidebar sections for Testimonial (Add/View) and Why Choose Us (Add/View) with nested routes
-- Multiple page routes: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
+- Collapsible sidebar sections for all page categories (Add/View) with nested routes
+- All page routes use nested sub-pages: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
 - Code comments added throughout layout, routing, and navigation files for readability
 
@@ -44,12 +44,24 @@ src/
     ├── choice/
     │   ├── AddWhyChoose.jsx        # Add Why Choose Us page
     │   └── ViewWhyChoose.jsx       # View Why Choose Us page
-    ├── Colour.jsx                  # Colour page
-    ├── Material.jsx                # Material page
-    ├── Category.jsx                # Category page
-    ├── SubCategory.jsx             # Sub Category page
-    ├── SubSubCategory.jsx          # Sub Sub Category page
-    └── Product.jsx                 # Product page
+    ├── colour/
+    │   ├── AddColour.jsx           # Add Colour page
+    │   └── ViewColour.jsx          # View Colours page
+    ├── material/
+    │   ├── AddMaterial.jsx         # Add Material page
+    │   └── ViewMaterial.jsx        # View Materials page
+    ├── category/
+    │   ├── AddCategory.jsx         # Add Category page
+    │   └── ViewCategory.jsx        # View Categories page
+    ├── sub-category/
+    │   ├── AddSubCategory.jsx      # Add Sub Category page
+    │   └── ViewSubCategory.jsx     # View Sub Categories page
+    ├── sub-sub-category/
+    │   ├── AddSubSubCategory.jsx   # Add Sub Sub Category page
+    │   └── ViewSubSubCategory.jsx  # View Sub Sub Categories page
+    └── product/
+        ├── AddProduct.jsx          # Add Product page
+        └── ViewProduct.jsx         # View Products page
 ```
 
 ### Tech Stack

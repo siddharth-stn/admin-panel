@@ -33,7 +33,16 @@ export default function Header() {
 
           // Non-clickable if it's the last segment OR a parent category (testimonial/choice)
           let isLast = index === pathSegments.length - 1;
-          if (segment === "testimonial" || segment === "choice") {
+          if (
+            segment === "testimonial" ||
+            segment === "choice" ||
+            segment === "colour" ||
+            segment === "material" ||
+            segment === "category" ||
+            segment === "sub-category" ||
+            segment === "sub-sub-category" ||
+            segment === "product"
+          ) {
             isLast = true;
           }
 
