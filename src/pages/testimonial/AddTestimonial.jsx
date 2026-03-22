@@ -44,7 +44,7 @@ export default function AddTestimonial() {
                 <div className="flex flex-col gap-2 flex-1">
                   <label htmlFor="rating">Rating</label>
                   <input
-                    type="text"
+                    type="number"
                     id="rating"
                     placeholder="Enter rating number"
                     className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -53,7 +53,7 @@ export default function AddTestimonial() {
                 <div className="flex flex-col gap-2 flex-1">
                   <label htmlFor="order">Order</label>
                   <input
-                    type="text"
+                    type="number"
                     id="order"
                     placeholder="Enter order number"
                     className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
