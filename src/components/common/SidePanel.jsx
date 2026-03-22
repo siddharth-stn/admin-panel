@@ -1,8 +1,19 @@
 import { Link } from "react-router";
 
+/**
+ * SidePanel — sidebar navigation displayed on every page.
+ *
+ * Structure:
+ *   1. Hamburger toggle button (visible only on small screens)
+ *   2. <aside> containing three link groups:
+ *      - Brand / logo area ("Admin Panel")
+ *      - Dashboard link (home)
+ *      - Page navigation links (Testimonial, Choice, Colour, etc.)
+ */
 export default function SidePanel() {
   return (
     <>
+      {/* Hamburger button — toggles sidebar visibility on mobile (sm:hidden) */}
       <button
         data-drawer-target="default-sidebar"
         data-drawer-toggle="default-sidebar"
@@ -32,6 +43,7 @@ export default function SidePanel() {
         aria-label="Sidenav"
       >
         <div className="overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+          {/* Brand / logo */}
           <ul className="space-y-2">
             <li>
               <Link
@@ -44,6 +56,8 @@ export default function SidePanel() {
               </Link>
             </li>
           </ul>
+
+          {/* Dashboard link — separated from other nav items */}
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
             <li>
               <Link
@@ -54,6 +68,8 @@ export default function SidePanel() {
               </Link>
             </li>
           </ul>
+
+          {/* Page navigation links */}
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700 text-[15px] font-bold">
             <li>
               <Link

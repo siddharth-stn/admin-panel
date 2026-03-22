@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <nav
-      className="flex px-5 py-4 text-gray-800 bg-white border"
+      className="flex px-5 py-4 text-gray-800 bg-white border-b"
       aria-label="Breadcrumb"
     >
       <ol className="inline-flex items-center text-xl font-medium">
