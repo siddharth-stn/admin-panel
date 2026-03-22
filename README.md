@@ -18,6 +18,7 @@ The project is in its **early stage** with the foundational structure and routin
 - A `CommonLayout` component with a grid-based structure (side panel + header + content area)
 - A `SidePanel` with `Link`-based navigation to all pages
 - A `Header` with dynamic breadcrumb navigation based on the current URL
+- A `Dashboard` page with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
 - Multiple page routes: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
 - Code comments added throughout layout, routing, and navigation files for readability
@@ -35,7 +36,7 @@ src/
 │       ├── Header.jsx              # Dynamic breadcrumb navigation
 │       └── SidePanel.jsx           # Sidebar with Link-based navigation
 └── pages/
-    ├── Dashboard.jsx               # Dashboard (home page)
+    ├── Dashboard.jsx               # Dashboard with overview stat cards
     ├── Testimonial.jsx             # Testimonial page
     ├── Choice.jsx                  # Why Choose Us page
     ├── Colour.jsx                  # Colour page
