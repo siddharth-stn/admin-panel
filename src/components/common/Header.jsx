@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <nav
-      className="flex px-5 py-4 text-gray-800 bg-mist-50 shadow-2xl z-99"
+      className="flex px-5 py-4 text-gray-800 bg-white dark:bg-gray-800 dark:text-white shadow-2xl z-99"
       aria-label="Breadcrumb"
     >
       <ol className="inline-flex items-center text-xl font-medium">
@@ -20,7 +20,7 @@ export default function Header() {
         <li className="inline-flex items-center">
           <Link
             to="/"
-            className="inline-flex items-center hover:text-blue-600 transition-colors"
+            className="inline-flex items-center hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             Dashboard
           </Link>
@@ -54,18 +54,18 @@ export default function Header() {
             <li key={routeTo}>
               <div className="flex items-center">
                 {/* Breadcrumb separator */}
-                <span className="mx-2 text-gray-400">&gt;</span>
+                <span className="mx-2 text-gray-400 dark:text-gray-500">&gt;</span>
 
                 {isLast ? (
                   // If it's the current page, just show text
-                  <span className="text-gray-900 font-semibold">
+                  <span className="text-gray-900 dark:text-white font-semibold">
                     {formattedSegment}
                   </span>
                 ) : (
                   // If it's a parent page, make it a link
                   <Link
                     to={routeTo}
-                    className="hover:text-blue-600 transition-colors"
+                    className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                   >
                     {formattedSegment}
                   </Link>

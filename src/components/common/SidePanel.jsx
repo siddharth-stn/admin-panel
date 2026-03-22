@@ -104,10 +104,10 @@ export default function SidePanel() {
             <li>
               <div
                 onClick={() => handleClick("testimonial")}
-                className="flex items-center p-2 rounded-lg group cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="flex items-center p-2 rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
-                <span className="ml-3 flex gap-2">
-                  <Quote className="rotate-180" size={15} />
+                <span className="ml-3 flex gap-2 items-center">
+                  <Quote className="rotate-180" size={20} />
                   Testimonial
                 </span>
               </div>
