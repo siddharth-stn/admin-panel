@@ -31,8 +31,11 @@ export default function Header() {
           // Build the route for the link (e.g., "/dashboard/settings")
           const routeTo = `/${pathSegments.slice(0, index + 1).join("/")}`;
 
-          // Check if this is the last item so we don't make it a clickable link
-          const isLast = index === pathSegments.length - 1;
+          // Non-clickable if it's the last segment OR a parent category (testimonial/choice)
+          let isLast = index === pathSegments.length - 1;
+          if (segment === "testimonial" || segment === "choice") {
+            isLast = true;
+          }
 
           // Capitalize the first letter for a cleaner look
           const formattedSegment =
@@ -41,8 +44,8 @@ export default function Header() {
           return (
             <li key={routeTo}>
               <div className="flex items-center">
-                {/* The slash separator */}
-                <span className="mx-2 text-gray-400">/</span>
+                {/* Breadcrumb separator */}
+                <span className="mx-2 text-gray-400">&gt;</span>
 
                 {isLast ? (
                   // If it's the current page, just show text
