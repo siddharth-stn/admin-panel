@@ -1,4 +1,6 @@
+// Dashboard — landing page with an overview of key metrics.
 export default function Dashboard() {
+  // Stat card data — each object defines a card's value, label, and colors
   const boxArray = [
     {
       textOne: "26",
@@ -31,6 +33,7 @@ export default function Dashboard() {
       <div className="">
         <h3 className="font-bold ml-2">Dashboard Overview</h3>
       </div>
+      {/* Render stat cards in a flex row that wraps on smaller screens */}
       <div className="box-wrapper flex gap-5 flex-wrap mt-6">
         {boxArray.map((v, i) => {
           return (

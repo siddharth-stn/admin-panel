@@ -16,7 +16,7 @@ The project is in its **early stage** with the foundational structure and routin
 
 - Layout-based routing using React Router 7
 - A `CommonLayout` component with a grid-based structure (side panel + header + content area)
-- A `SidePanel` with `Link`-based navigation to all pages
+- A `SidePanel` with `NavLink`-based navigation, active route highlighting, and lucide-react icons
 - A `Header` with dynamic breadcrumb navigation based on the current URL
 - A `Dashboard` page with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
 - Multiple page routes: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
@@ -34,7 +34,7 @@ src/
 │   ├── CommonLayout.jsx            # Grid layout (sidebar + header + outlet)
 │   └── common/
 │       ├── Header.jsx              # Dynamic breadcrumb navigation
-│       └── SidePanel.jsx           # Sidebar with Link-based navigation
+│       └── SidePanel.jsx           # Sidebar with NavLink active styling + icons
 └── pages/
     ├── Dashboard.jsx               # Dashboard with overview stat cards
     ├── Testimonial.jsx             # Testimonial page
@@ -55,6 +55,7 @@ src/
 | Vite | 8 | Build tool & dev server |
 | Tailwind CSS | 4 | Utility-first CSS framework |
 | React Router | 7 | Client-side routing |
+| Lucide React | — | Icon library for sidebar navigation |
 | ESLint | 9 | Code linting |
 
 ---
