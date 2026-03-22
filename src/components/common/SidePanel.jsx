@@ -1,4 +1,15 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
+import {
+  Quote,
+  ShieldCheck,
+  Palette,
+  Atom,
+  ChartBarStacked,
+  Blocks,
+  FileBox,
+  Box,
+  UserPen,
+} from "lucide-react";
 
 /**
  * SidePanel — sidebar navigation displayed on every page.
@@ -60,80 +71,162 @@ export default function SidePanel() {
           {/* Dashboard link — separated from other nav items */}
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
             <li>
-              <Link
+              <NavLink
                 to="/"
-                className="flex items-center p-2 text-[15px] font-bold text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                end
+                className={({ isActive }) =>
+                  `flex items-center p-2 text-[15px] font-bold rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Dashboard</span>
-              </Link>
+                <span className="ml-3 flex gap-2 items-center">
+                  <UserPen size={20} />
+                  Dashboard
+                </span>
+              </NavLink>
             </li>
           </ul>
 
           {/* Page navigation links */}
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700 text-[15px] font-bold">
             <li>
-              <Link
+              <NavLink
                 to="/testimonial"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Testimonial</span>
-              </Link>
+                <span className="ml-3 flex gap-2">
+                  <Quote className="rotate-180" size={15} />
+                  Testimonial
+                </span>
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/choice"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Why Choose us</span>
-              </Link>
+                <span className="ml-3 flex gap-2 items-center">
+                  <ShieldCheck size={20} />
+                  Why Choose us
+                </span>
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/colour"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Colour</span>
-              </Link>
+                <span className="ml-3 flex gap-2 items-center">
+                  <Palette sixe={20} />
+                  Colour
+                </span>
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/material"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Material</span>
-              </Link>
+                <span className="ml-3 flex gap-2 items-center">
+                  <Atom size={20} />
+                  Material
+                </span>
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/category"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Category</span>
-              </Link>
+                <span className="ml-3 flex gap-2 items-center">
+                  <ChartBarStacked size={20} />
+                  Category
+                </span>
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/sub-category"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Sub Category</span>
-              </Link>
+                <span className="ml-3 flex gap-2 items-center">
+                  <Blocks size={20} />
+                  Sub Category
+                </span>
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/sub-sub-category"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Sub Sub Category</span>
-              </Link>
+                <span className="ml-3 flex gap-2 items-center">
+                  <FileBox size={20} />
+                  Sub Sub Category
+                </span>
+              </NavLink>
             </li>
             <li>
-              <Link
+              <NavLink
                 to="/product"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg group ${
+                    isActive
+                      ? "bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400"
+                      : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`
+                }
               >
-                <span className="ml-3">Product</span>
-              </Link>
+                <span className="ml-3 flex gap-2 items-center">
+                  <Box size={20} />
+                  Product
+                </span>
+              </NavLink>
             </li>
           </ul>
         </div>
