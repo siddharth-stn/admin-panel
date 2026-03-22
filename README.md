@@ -20,6 +20,7 @@ The project is in its **early stage** with the foundational structure and routin
 - A `Header` with dynamic breadcrumb navigation based on the current URL
 - Multiple page routes: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
+- Code comments added throughout layout, routing, and navigation files for readability
 
 ### Project Structure
 
