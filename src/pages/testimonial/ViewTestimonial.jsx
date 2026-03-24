@@ -1,9 +1,11 @@
 import { ImageUp, Funnel } from "lucide-react";
 
+// View Testimonials page — displays testimonials in a table with filter and bulk actions
 export default function ViewTestimonial() {
   return (
     <>
       <div className="form-wrapper mt-10 mx-5 rounded-xl overflow-auto shadow-2xl">
+        {/* Header with title and action buttons */}
         <div className="form-header border border-gray-200 dark:border-gray-700 py-5 px-6 rounded text-white bg-blue-600 dark:bg-blue-400 dark:text-white hover:bg-blue-700 dark:hover:bg-blue-500">
           <div className="flex">
             <h3 className="text-2xl font-bold dark:text-white">
@@ -23,6 +25,7 @@ export default function ViewTestimonial() {
             </div>
           </div>
         </div>
+        {/* Testimonials table — short content columns are center-aligned, text columns are left-aligned */}
         <div className="text-[18px]">
           <table className="w-full mt-2">
             <thead className="border-b">
@@ -38,6 +41,7 @@ export default function ViewTestimonial() {
                 <th className="py-3 px-4 text-center text-nowrap">Action</th>
               </tr>
             </thead>
+            {/* align-middle keeps all cells vertically centered when image makes row taller */}
             <tbody>
               <tr className="align-middle">
                 <td className="py-3 px-4 text-center">

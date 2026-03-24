@@ -1,5 +1,6 @@
 import { ImageUp } from "lucide-react";
 
+// Add Why Choose Us page — form to create a new record with image upload, title, and order
 export default function AddWhyChooseUs() {
   return (
     <>

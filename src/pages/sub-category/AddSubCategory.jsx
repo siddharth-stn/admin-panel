@@ -1,5 +1,6 @@
 import { ImageUp } from "lucide-react";
 
+// Add Sub Category page — form with parent category dropdown, image upload, name, and order
 export default function AddSubCategory() {
   return (
     <>

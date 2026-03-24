@@ -19,10 +19,12 @@ The project is in its **early stage** with the foundational structure and routin
 - A `SidePanel` with `NavLink`-based navigation, active route highlighting, lucide-react icons, and collapsible sub-menus (using `useState`)
 - A `Header` with dynamic breadcrumb navigation based on the current URL
 - A `Dashboard` page with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
+- A `View Testimonials` page with a data table (select, S.No., name, message, rating, image, order, status, action) and bulk action buttons (Filter, Delete All, Change Status)
+- Add forms for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product — each with image upload, relevant fields, and submit button
 - Collapsible sidebar sections for all page categories (Add/View) with nested routes
 - All page routes use nested sub-pages: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
-- Code comments added throughout layout, routing, and navigation files for readability
+- Code comments added throughout all component and page files for readability
 
 ### Project Structure
 

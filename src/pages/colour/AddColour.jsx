@@ -1,5 +1,6 @@
 import { ImageUp } from "lucide-react";
 
+// Add Colour page — form to create a new colour with name, hex code, and order
 export default function AddColour() {
   return (
     <>

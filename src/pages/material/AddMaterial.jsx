@@ -1,3 +1,4 @@
+// Add Material page — form to create a new material with name and order
 export default function AddMaterial() {
   return (
     <>

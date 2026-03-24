@@ -1,5 +1,6 @@
 import { ImageUp } from "lucide-react";
 
+// Add Testimonial page — form to create a new testimonial with image upload, name, message, rating, and order
 export default function AddTestimonial() {
   return (
     <>

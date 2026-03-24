@@ -1,5 +1,6 @@
 import { ImageUp } from "lucide-react";
 
+// Add Category page — form to create a new category with image upload, name, and order
 export default function AddCategory() {
   return (
     <>

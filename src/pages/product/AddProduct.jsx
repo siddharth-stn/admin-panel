@@ -1,5 +1,7 @@
 import { ImageUp } from "lucide-react";
 
+// Add Product page — comprehensive form with category/sub-category selectors, product details,
+// descriptions, image uploads (single + multiple), pricing, and order
 export default function AddProduct() {
   return (
     <>
