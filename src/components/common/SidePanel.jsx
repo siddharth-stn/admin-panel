@@ -430,7 +430,7 @@ export default function SidePanel() {
                     }`
                   }
                 >
-                  <span className="">View Product</span>
+                  <span className="">View Products</span>
                 </NavLink>
               </div>
             </li>
