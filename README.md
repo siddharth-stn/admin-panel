@@ -2,17 +2,13 @@
 
 A modern, responsive admin dashboard built with **React 19**, **Vite 8**, **Tailwind CSS 4**, and **React Router 7** — designed as a course project for the **MERN Stack + DSA + AI** program at [WsCube Tech](https://www.wscubetech.com).
 
-> This project is actively under development. Features and documentation will grow as the build progresses.
-
 ---
 
 ## About the Project
 
-This admin panel is being built from the ground up to demonstrate real-world frontend architecture — layout-based routing, reusable components, and a clean separation of concerns. It serves as a practical application of the concepts I'm learning in my MERN Stack journey and will eventually evolve into a full-featured dashboard.
+This admin panel demonstrates real-world frontend architecture — layout-based routing, reusable components, and a clean separation of concerns. It serves as a practical application of the concepts I'm learning in my MERN Stack journey.
 
-### Current Status
-
-The project is in its **early stage** with the foundational structure and routing in place:
+### Features
 
 - Layout-based routing using React Router 7
 - A `CommonLayout` component with a grid-based structure (side panel + header + content area)
@@ -24,6 +20,8 @@ The project is in its **early stage** with the foundational structure and routin
 - Collapsible sidebar sections for all page categories (Add/View) with nested routes
 - All page routes use nested sub-pages: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
+- Dark mode support via Tailwind's `dark:` variant across sidebar, header, forms, and page headers
+- Consistent theme documented in `THEME.md` for design reference
 - Code comments added throughout all component and page files for readability
 
 ### Project Structure

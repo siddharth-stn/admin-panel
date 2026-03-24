@@ -23,7 +23,7 @@ export default function CommonLayout() {
         <div className="header-wrapper">
           <Header />
         </div>
-        <div className="outlet-wrapper h-full">
+        <div className="outlet-wrapper">
           {/* Child route component renders here */}
           <Outlet />
         </div>
