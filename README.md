@@ -14,7 +14,8 @@ This admin panel demonstrates real-world frontend architecture — layout-based 
 - A `CommonLayout` component with a grid-based structure (side panel + header + content area)
 - A `SidePanel` with `NavLink`-based navigation, active route highlighting, lucide-react icons, and collapsible sub-menus (using `useState`)
 - A `Header` with dynamic breadcrumb navigation based on the current URL
-- A `Dashboard` page with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
+- A `Login` page at `/` with a split-layout design (email/password form + decorative image)
+- A `Dashboard` page at `/dashboard` with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
 - View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action, and bulk action buttons (Filter, Delete All, Change Status)
 - Add forms for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product — each with image upload, relevant fields, and submit button
 - Collapsible sidebar sections for all page categories (Add/View) with nested routes
@@ -37,6 +38,7 @@ src/
 │       ├── Header.jsx              # Dynamic breadcrumb navigation
 │       └── SidePanel.jsx           # Sidebar with NavLink active styling + icons
 └── pages/
+    ├── Login.jsx                   # Login page with email/password form
     ├── Dashboard.jsx               # Dashboard with overview stat cards
     ├── testimonial/
     │   ├── AddTestimonial.jsx      # Add Testimonial page

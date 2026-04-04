@@ -19,6 +19,7 @@ import AddSubSubCategory from "./pages/sub-sub-category/AddSubSubCategory";
 import ViewSubSubCategory from "./pages/sub-sub-category/ViewSubSubCategory";
 import AddProduct from "./pages/product/AddProduct";
 import ViewProduct from "./pages/product/ViewProduct";
+import Login from "./pages/Login";
 
 // App entry point — renders the route tree inside StrictMode and BrowserRouter.
 // CommonLayout is a layout route: it renders the sidebar + header chrome,
@@ -28,8 +29,9 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Routes>
         {/* Layout route — wraps every page with sidebar + header */}
+        <Route path="/" element={<Login />} />
         <Route element={<CommonLayout />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route
             path="testimonial/add-testimonial"
             element={<AddTestimonial />}

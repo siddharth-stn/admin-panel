@@ -80,7 +80,7 @@ export default function SidePanel() {
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
             <li>
               <NavLink
-                to="/"
+                to="/dashboard"
                 end
                 className={({ isActive }) =>
                   `flex items-center p-2 text-[15px] font-bold rounded-lg group ${
