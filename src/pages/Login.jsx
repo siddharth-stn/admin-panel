@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import loginImage from "../assets/loginImage.avif";
 
 /**
@@ -35,9 +36,11 @@ const Login = () => {
                   className="outline-0 border border-[black] bg-gray-200 rounded mt-1 p-2"
                 />
               </div>
-              <button className="bg-[#2B7FFF] rounded text-white mt-5 w-[100%] px-5 py-2 cursor-pointer">
-                Login
-              </button>
+              <NavLink to="/dashboard">
+                <button className="bg-[#2B7FFF] rounded text-white mt-5 w-[100%] px-5 py-2 cursor-pointer">
+                  Login
+                </button>
+              </NavLink>
             </form>
           </div>
         </div>
