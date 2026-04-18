@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "izitoast/dist/css/iziToast.min.css";
 import CommonLayout from "./components/CommonLayout";
 import { BrowserRouter, Route, Routes } from "react-router";
 import AddTestimonial from "./pages/testimonial/AddTestimonial";

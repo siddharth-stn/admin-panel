@@ -18,7 +18,7 @@ export default function AddTestimonial() {
                 <ImageUp size={90} className="text-gray-500" />
               </div>
 
-              <img src="" alt="upload" className="w-full z-3" />
+              {/* <img src="" alt="upload" className="w-full z-3" /> */}
             </figure>
           </div>
           <div className="textContent-wrapper w-full mb-10">

@@ -18,6 +18,7 @@ This admin panel demonstrates real-world frontend architecture — layout-based 
 - A `Dashboard` page at `/dashboard` with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
 - View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action, and bulk action buttons (Filter, Delete All, Change Status)
 - Add forms for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product — each with image upload, relevant fields, and submit button
+- Add Category form with full functionality: Axios POST to backend API, image upload with live preview, and toast notifications (iziToast) for success/warning/error feedback
 - Collapsible sidebar sections for all page categories (Add/View) with nested routes
 - All page routes use nested sub-pages: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
@@ -74,6 +75,8 @@ src/
 | Vite | 8 | Build tool & dev server |
 | Tailwind CSS | 4 | Utility-first CSS framework |
 | React Router | 7 | Client-side routing |
+| Axios | — | HTTP client for API requests |
+| iziToast | — | Toast notification library |
 | Lucide React | — | Icon library for sidebar navigation |
 | ESLint | 9 | Code linting |
 

@@ -17,8 +17,6 @@ export default function AddWhyChooseUs() {
               <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 left-1/2">
                 <ImageUp size={90} className="text-gray-500" />
               </div>
-
-              <img src="" alt="upload" className="w-full z-3" />
             </figure>
           </div>
           <div className="textContent-wrapper w-full mb-10">
