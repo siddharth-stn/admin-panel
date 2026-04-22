@@ -18,7 +18,7 @@ This admin panel demonstrates real-world frontend architecture — layout-based 
 - A `Dashboard` page at `/dashboard` with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
 - View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action, and bulk action buttons (Filter, Delete All, Change Status)
 - Add forms for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product — each with image upload, relevant fields, and submit button
-- Add Category form with full functionality: Axios POST to backend API, image upload with live preview, and toast notifications (iziToast) for success/warning/error feedback
+- Add Category form with full functionality: Axios POST to backend API, image upload with live preview, client-side validation with real-time error clearing (`noValidate` + custom validation logic using `FormData`), and toast notifications (iziToast) for success/warning/error feedback including server-side validation error display
 - Collapsible sidebar sections for all page categories (Add/View) with nested routes
 - All page routes use nested sub-pages: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
@@ -54,7 +54,7 @@ src/
     │   ├── AddMaterial.jsx         # Add Material page
     │   └── ViewMaterial.jsx        # View Materials page
     ├── category/
-    │   ├── AddCategory.jsx         # Add Category page
+    │   ├── AddCategory.jsx         # Add Category page (API integrated + validation)
     │   └── ViewCategory.jsx        # View Categories page
     ├── sub-category/
     │   ├── AddSubCategory.jsx      # Add Sub Category page
@@ -75,9 +75,9 @@ src/
 | Vite | 8 | Build tool & dev server |
 | Tailwind CSS | 4 | Utility-first CSS framework |
 | React Router | 7 | Client-side routing |
-| Axios | — | HTTP client for API requests |
-| iziToast | — | Toast notification library |
-| Lucide React | — | Icon library for sidebar navigation |
+| Axios | 1.15 | HTTP client for API requests |
+| iziToast | 1.4 | Toast notification library |
+| Lucide React | 1.0 | Icon library for UI icons |
 | ESLint | 9 | Code linting |
 
 ---
@@ -124,7 +124,7 @@ Throughout my tenure in administration, I constantly encountered inefficiencies 
 - **WsCube Tech** (Current) — MERN Stack + DSA + AI under live mentorship at India's leading vernacular EdTech platform (ISO 9001:2015 Certified, 4M+ YouTube subscribers, 2.5 lakh+ students trained)
 - **The Odin Project** — Completed the full stack JavaScript path (2020-2022)
 - **Namaste React** by Akshay Saini (2023)
-- Currently learning **Next.js** (2026)
+- Currently learning **Next.js** (2025-2026)
 
 ### Technical Skills
 

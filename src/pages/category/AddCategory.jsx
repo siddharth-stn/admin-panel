@@ -5,9 +5,33 @@ import iziToast from "izitoast";
 
 // Add Category page — form to create a new category with image upload, name, and order
 export default function AddCategory() {
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const [imageUrl, setImageUrl] = useState(null);
+  const handleImagePreview = (fileObj) => {
+    const imageUrlObj = URL.createObjectURL(fileObj);
+    setImageUrl(imageUrlObj);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const errors = {};
+
+    if (!imageUrl) {
+      errors.image = true;
+    }
+    if (!formData.get("name")) {
+      errors.name = true;
+    }
+    if (!formData.get("order")) {
+      errors.order = true;
+    }
+
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length > 0) return;
+
     try {
       const result = await axios.post(
         "http://localhost:8000/api/backend/categories/create",
@@ -21,9 +45,12 @@ export default function AddCategory() {
           position: "topRight",
         });
       } else {
+        const message = result.data._error
+          ? Object.values(result.data._error).join(", ")
+          : result.data._message;
         iziToast.warning({
           title: "कुछ तो गड़बड़ है दया!",
-          message: result.data._message,
+          message: message,
           position: "topRight",
         });
       }
@@ -36,11 +63,14 @@ export default function AddCategory() {
     }
   };
 
-  const [imageUrl, setImageUrl] = useState(null);
-  const handleImageUpload = (imageUrl) => {
-    const imageUrlObj = URL.createObjectURL(imageUrl);
-    setImageUrl(imageUrlObj);
+  const handleErrors = (fieldName) => {
+    setValidationErrors((prev) => {
+      const updated = { ...prev };
+      delete updated[fieldName];
+      return updated;
+    });
   };
+
   return (
     <>
       <div className="form-wrapper mt-10 mx-5 rounded-xl overflow-auto shadow-2xl">
@@ -50,6 +80,7 @@ export default function AddCategory() {
           </h3>
         </div>
         <form
+          noValidate
           onSubmit={(e) => {
             handleSubmit(e);
           }}
@@ -79,28 +110,39 @@ export default function AddCategory() {
                 className="absolute hidden"
                 accept="image/*"
                 onChange={(e) => {
-                  handleImageUpload(e.target.files[0]);
+                  handleImagePreview(e.target.files[0]);
+                  handleErrors("image");
                 }}
               />
             </figure>
+            {validationErrors.image && (
+              <span className="text-red-600 text-sm ms-2">Upload Image</span>
+            )}
           </label>
           <div className="textContent-wrapper w-full mb-10">
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-2">
-                <label htmlFor="category">Category Name</label>
+                <label htmlFor="name">Category Name</label>
                 <input
+                  onChange={(e) => handleErrors(e.target.name)}
                   required
                   type="text"
                   name="name"
-                  id="category"
+                  id="name"
                   placeholder="Enter category name"
                   className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 />
+                {validationErrors.name && (
+                  <span className="text-sm text-red-500 ms-2">
+                    Enter category name
+                  </span>
+                )}
               </div>
               <div className="flex gap-5">
                 <div className="flex flex-col gap-2 flex-1">
                   <label htmlFor="order">Order</label>
                   <input
+                    onChange={(e) => handleErrors(e.target.name)}
                     required
                     name="order"
                     type="number"
@@ -108,6 +150,11 @@ export default function AddCategory() {
                     placeholder="Enter order number"
                     className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
+                  {validationErrors.order && (
+                    <span className="text-red-600 text-sm ms-2">
+                      Enter order quantity
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="self-end mr-10 border border-gray-200 dark:border-gray-700 py-2 px-4 rounded text-white bg-blue-600 dark:bg-blue-400 dark:text-white cursor-pointer hover:bg-blue-700 dark:hover:bg-blue-500">
