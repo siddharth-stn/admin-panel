@@ -19,6 +19,9 @@ This admin panel demonstrates real-world frontend architecture — layout-based 
 - View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action, and bulk action buttons (Filter, Delete All, Change Status)
 - Add forms for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product — each with image upload, relevant fields, and submit button
 - Add Category form with full functionality: Axios POST to backend API, image upload with live preview, client-side validation with real-time error clearing (`noValidate` + custom validation logic using `FormData`), and toast notifications (iziToast) for success/warning/error feedback including server-side validation error display
+- View Category page with full API integration: fetches categories from backend, displays data in a dynamic table with serial numbers, image rendering via static file serving, status indicators (Active/Inactive), filter form with clear/apply functionality, server-side pagination (sends current page to backend, renders page controls via `react-responsive-pagination`), and bulk action buttons (Filter, Delete All, Change Status)
+- Environment variable configuration via `.env` file (`VITE_SERVER_URL`) for backend API and static asset URLs
+- Backend static file serving configured with `express.static` to serve uploaded images from the `/uploads` directory
 - Collapsible sidebar sections for all page categories (Add/View) with nested routes
 - All page routes use nested sub-pages: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
 - Tailwind CSS 4 integrated via the Vite plugin for utility-first styling
@@ -55,7 +58,7 @@ src/
     │   └── ViewMaterial.jsx        # View Materials page
     ├── category/
     │   ├── AddCategory.jsx         # Add Category page (API integrated + validation)
-    │   └── ViewCategory.jsx        # View Categories page
+    │   └── ViewCategory.jsx        # View Categories page (API integrated + pagination + filter)
     ├── sub-category/
     │   ├── AddSubCategory.jsx      # Add Sub Category page
     │   └── ViewSubCategory.jsx     # View Sub Categories page
@@ -78,6 +81,7 @@ src/
 | Axios | 1.15 | HTTP client for API requests |
 | iziToast | 1.4 | Toast notification library |
 | Lucide React | 1.0 | Icon library for UI icons |
+| react-responsive-pagination | - | Responsive pagination component |
 | ESLint | 9 | Code linting |
 
 ---
@@ -93,6 +97,9 @@ cd admin-panel
 
 # Install dependencies
 npm install
+
+# Create a .env file with your backend URL
+echo "VITE_SERVER_URL=http://localhost:8000/" > .env
 
 # Start the development server
 npm run dev
