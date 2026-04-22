@@ -15,12 +15,23 @@ export default function ViewCategory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
+  const applyFilter = (e) => {
+    e.preventDefault();
+    const obj = {
+      name: e.target.closest("form").categoryName.value,
+      order: e.target.closest("form").categoryOrder.value,
+    };
+
+    setFilterData(obj);
+    setCurrentPage(1);
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const result = await axios.post(
           "http://localhost:8000/api/backend/categories/view",
-          { page: currentPage },
+          { page: currentPage, name: filterData.name, order: filterData.order },
         );
 
         if (result.data._status === true) {
@@ -35,7 +46,7 @@ export default function ViewCategory() {
       }
     };
     fetchCategories();
-  }, [currentPage]);
+  }, [currentPage, filterData]);
 
   return (
     <>
@@ -52,28 +63,46 @@ export default function ViewCategory() {
             >
               x
             </div>
-            <h5 className="text-xl font-bold dark:text-white">Filter</h5>
-            <form className="flex flex-col gap-2">
-              <label htmlFor="categoryName">Category Name</label>
-              <input
-                className="border border-gray-700 w-55 p-2"
-                type="text"
-                placeholder="Enter Category Name"
-                id="categoryName"
-              />
+            <h5 className="text-xl font-bold">Filter ---&gt;</h5>
+            <form className="flex flex-col gap-5">
+              <div className="flex gap-6">
+                <label htmlFor="categoryName" className="flex flex-col gap-2">
+                  <span>Category Name</span>
+                  <input
+                    className="border border-gray-700 w-55 p-2"
+                    name="categoryName"
+                    type="text"
+                    placeholder="Enter Category Name"
+                    id="categoryName"
+                  />
+                </label>
+                <label htmlFor="categoryOrder" className="flex flex-col gap-2">
+                  <span>Category Order</span>
+                  <input
+                    className="border border-gray-700 w-55 p-2"
+                    name="categoryOrder"
+                    type="number"
+                    placeholder="Enter Order quantity"
+                    id="categoryOrder"
+                  />
+                </label>
+              </div>
               <div className="flex gap-5">
                 <button
                   className="border border-amber-500 py-2 px-3 rounded bg-amber-400 text-white font-bold hover:text-black hover:bg-white"
                   onClick={(e) => {
                     e.preventDefault();
                     e.target.closest("form").reset();
+                    setFilterData({});
                   }}
                 >
                   Clear
                 </button>
                 <button
                   className="border border-pink-900 py-2 px-3 rounded bg-pink-300 text-white font-bold hover:text-black hover:bg-white"
-                  onClick={(e) => e.preventDefault()}
+                  onClick={(e) => {
+                    applyFilter(e);
+                  }}
                 >
                   Apply
                 </button>

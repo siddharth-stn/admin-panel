@@ -16,10 +16,12 @@ This admin panel demonstrates real-world frontend architecture — layout-based 
 - A `Header` with dynamic breadcrumb navigation based on the current URL
 - A `Login` page at `/` with a split-layout design (email/password form + decorative image) — login button navigates to `/dashboard` via `NavLink`
 - A `Dashboard` page at `/dashboard` with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
-- View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action, and bulk action buttons (Filter, Delete All, Change Status)
-- Add forms for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product — each with image upload, relevant fields, and submit button
-- Add Category form with full functionality: Axios POST to backend API, image upload with live preview, client-side validation with real-time error clearing (`noValidate` + custom validation logic using `FormData`), and toast notifications (iziToast) for success/warning/error feedback including server-side validation error display
-- View Category page with full API integration: fetches categories from backend, displays data in a dynamic table with serial numbers, image rendering via static file serving, status indicators (Active/Inactive), filter form with clear/apply functionality, server-side pagination (sends current page to backend, renders page controls via `react-responsive-pagination`), and bulk action buttons (Filter, Delete All, Change Status)
+- View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action (where applicable), and bulk action buttons (Filter, Delete All, Change Status); View Product page is currently a placeholder
+- Add forms for Testimonial (image, name, message, rating, order), Why Choose Us (image, title, order), Colour (name, hex code, order), Material (name, order), Category (image upload, name, order — fully API-integrated), Sub Category (parent category dropdown, image, name, order), and Sub Sub Category (parent category + sub category dropdowns, image, name, order)
+- Add Product form with comprehensive fields: parent category, sub category, and sub sub category selectors, product name, product type, materials, colors, short description, long description, single image upload, multiple image uploads, price, actual price, and order
+- Add Category form with full functionality: Axios POST to backend API, image upload with live preview (`URL.createObjectURL`), client-side validation with real-time error clearing (`noValidate` + custom validation logic using `FormData`), and toast notifications (iziToast) for success/warning/error feedback including server-side validation error display
+- View Category page with full API integration: fetches categories from backend via Axios POST, displays data in a dynamic table with serial numbers, image rendering via `VITE_SERVER_URL` env variable and static file serving, status indicators (Active/Inactive), functional filter form (filter by category name and order with clear/apply, sends filter data to backend and resets pagination on apply), server-side pagination (sends current page to backend, renders page controls via `react-responsive-pagination`), empty state handling, and bulk action buttons (Filter, Delete All, Change Status)
+- iziToast CSS globally imported in `main.jsx` for toast notification styling
 - Environment variable configuration via `.env` file (`VITE_SERVER_URL`) for backend API and static asset URLs
 - Backend static file serving configured with `express.static` to serve uploaded images from the `/uploads` directory
 - Collapsible sidebar sections for all page categories (Add/View) with nested routes
@@ -66,8 +68,8 @@ src/
     │   ├── AddSubSubCategory.jsx   # Add Sub Sub Category page
     │   └── ViewSubSubCategory.jsx  # View Sub Sub Categories page
     └── product/
-        ├── AddProduct.jsx          # Add Product page
-        └── ViewProduct.jsx         # View Products page
+        ├── AddProduct.jsx          # Add Product page (comprehensive multi-field form)
+        └── ViewProduct.jsx         # View Products page (placeholder)
 ```
 
 ### Tech Stack
@@ -81,7 +83,7 @@ src/
 | Axios | 1.15 | HTTP client for API requests |
 | iziToast | 1.4 | Toast notification library |
 | Lucide React | 1.0 | Icon library for UI icons |
-| react-responsive-pagination | - | Responsive pagination component |
+| react-responsive-pagination | 2.13 | Responsive pagination component |
 | ESLint | 9 | Code linting |
 
 ---
