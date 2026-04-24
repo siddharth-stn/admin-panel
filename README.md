@@ -66,8 +66,8 @@ src/
 │   ├── AddSubCategory.jsx      # Add/Edit Sub Category page (full CRUD with controlled components)
 │   └── ViewSubCategory.jsx     # View Sub Categories page (API integrated with advanced filtering)
     ├── sub-sub-category/
-    │   ├── AddSubSubCategory.jsx   # Add Sub Sub Category page
-    │   └── ViewSubSubCategory.jsx  # View Sub Sub Categories page
+    │   ├── AddSubSubCategory.jsx   # Add/Edit Sub Sub Category page (full CRUD with hierarchical dropdowns)
+    │   └── ViewSubSubCategory.jsx  # View Sub Sub Categories page (API integrated with cascading filters)
     └── product/
         ├── AddProduct.jsx          # Add Product page (comprehensive multi-field form)
         └── ViewProduct.jsx         # View Products page (placeholder)
@@ -116,6 +116,81 @@ npm run dev
 | `npm run build`   | Build for production                 |
 | `npm run preview` | Preview the production build locally |
 | `npm run lint`    | Run ESLint                           |
+
+---
+
+## Features
+
+### Sub Sub Category Management
+
+The sub sub category feature provides three-level hierarchical categorization with advanced filtering and cascading dropdowns.
+
+#### Key Features
+
+- **Hierarchical Structure**: Parent Category → Sub Category → Sub Sub Category
+- **Cascading Dropdowns**: Sub categories populate based on selected parent category
+- **Advanced Filtering**: Filter by name, parent category, and sub category
+- **Image Upload**: Click-to-upload image interface (no dedicated button)
+- **Real-time Updates**: Sub category dropdowns update immediately on parent selection
+- **Controlled Components**: Form state management with validation
+- **Pagination**: Server-side pagination for large datasets
+- **Bulk Actions**: Multi-select for status toggle and delete operations
+
+#### Components
+
+**AddSubSubCategory.jsx**
+
+- Full CRUD operations (create/update based on URL params)
+- Hierarchical dropdowns with real-time population
+- Image upload with preview functionality
+- Form validation and error handling
+- Controlled component state management
+
+**ViewSubSubCategory.jsx**
+
+- Advanced filtering with cascading dropdowns
+- Server-side pagination
+- Bulk selection and actions
+- Image display with fallback handling
+- Responsive table design
+
+#### API Integration
+
+```javascript
+// Get parent categories for dropdown
+await axios.post("/api/backend/sub-sub-categories/parent-category");
+
+// Get sub categories for selected parent
+await axios.post("/api/backend/sub-sub-categories/sub-category", {
+  parent_category_id: selectedParentId,
+});
+
+// Create/Update sub sub category
+const formData = new FormData();
+formData.append("parent_category_id", parentId);
+formData.append("sub_category_id", subCategoryId);
+formData.append("name", name);
+formData.append("order", order);
+formData.append("image", imageFile); // Optional
+
+await axios.post("/api/backend/sub-sub-categories/create", formData);
+```
+
+#### User Experience
+
+- **Intuitive Navigation**: Clear hierarchy with breadcrumb-like structure
+- **Real-time Feedback**: Immediate dropdown population and form validation
+- **Clean Interface**: Minimal design with focus on functionality
+- **Consistent Patterns**: Same UI/UX patterns as other category modules
+
+#### Technical Implementation
+
+- **React Hooks**: useState, useEffect for state management
+- **Axios**: HTTP client for API communication
+- **React Router**: Navigation and URL parameter handling
+- **Tailwind CSS**: Utility-first styling
+- **iziToast**: User notifications
+- **Lucide React**: Consistent iconography
 
 ---
 

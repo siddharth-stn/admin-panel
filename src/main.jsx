@@ -69,6 +69,10 @@ createRoot(document.getElementById("root")).render(
             path="sub-sub-category/view-sub-sub-category"
             element={<ViewSubSubCategory />}
           />
+          <Route
+            path="sub-sub-category/update/:id"
+            element={<AddSubSubCategory />}
+          />
           <Route path="product/add-product" element={<AddProduct />} />
           <Route path="product/view-product" element={<ViewProduct />} />
         </Route>
