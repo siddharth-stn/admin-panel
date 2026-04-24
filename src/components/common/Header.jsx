@@ -8,7 +8,7 @@ export default function Header() {
   // Example: "/dashboard/settings" becomes ["dashboard", "settings"]
   const pathSegments = location.pathname
     .split("/")
-    .filter((segment) => segment);
+    .filter((segment) => segment && !/^[a-f0-9]{24}$/.test(segment));
 
   return (
     <nav

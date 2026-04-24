@@ -1,9 +1,9 @@
 import axios from "axios";
-import iziToast from "izitoast";
 import { SquarePen, Funnel } from "lucide-react";
 import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic-light-dark.css";
+import { Link } from "react-router";
 
 // View Category page — displays categories in a table with image, order, status, and edit action
 export default function ViewCategory() {
@@ -11,9 +11,31 @@ export default function ViewCategory() {
   const [filterData, setFilterData] = useState({});
   const [selectedRecord, setSelectedRecord] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [enableDisable, setEnableDisable] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+
+  const singleCheckSelect = (id) => {
+    if (selectedRecord.includes(id)) {
+      let finalData = selectedRecord.filter((elem) => {
+        if (elem !== id) {
+          return elem;
+        }
+      });
+      // console.log(finalData);
+      setSelectedRecord(finalData);
+    } else {
+      setSelectedRecord([...selectedRecord, id]);
+      // console.log([...selectedRecord, id]);
+    }
+
+    if (selectedRecord.length > 0) {
+      setEnableDisable(true);
+    } else {
+      setEnableDisable(false);
+    }
+  };
 
   const applyFilter = (e) => {
     e.preventDefault();
@@ -124,10 +146,16 @@ export default function ViewCategory() {
                 <Funnel size={16} />
                 Filter
               </button>
-              <button className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer hover:bg-amber-50 hover:text-black">
+              <button
+                disabled={enableDisable}
+                className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer hover:bg-amber-50 hover:text-black"
+              >
                 Delete All
               </button>
-              <button className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer hover:bg-amber-50 hover:text-black">
+              <button
+                disabled={enableDisable}
+                className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer hover:bg-amber-50 hover:text-black"
+              >
                 Change Status
               </button>
             </div>
@@ -154,7 +182,13 @@ export default function ViewCategory() {
                   return (
                     <tr className="align-middle border-b" key={index}>
                       <td className="py-3 px-4 text-center">
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onClick={() => singleCheckSelect(element._id)}
+                          checked={
+                            selectedRecord.includes(element._id) ? true : false
+                          }
+                        />
                       </td>
                       <td className="py-3 px-4 text-center">{index + 1}</td>
                       <td className="py-3 px-4 text-nowrap">{element.name}</td>
@@ -178,7 +212,9 @@ export default function ViewCategory() {
                         )}
                       </td>
                       <td className="pt-8 px-4 flex items-center justify-center text-yellow-400">
-                        <SquarePen />
+                        <Link to={`/category/update/${element._id}`}>
+                          <SquarePen />
+                        </Link>
                       </td>
                     </tr>
                   );

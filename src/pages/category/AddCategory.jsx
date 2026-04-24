@@ -1,11 +1,39 @@
 import axios from "axios";
 import { ImageUp } from "lucide-react";
-import { useState } from "react";
 import iziToast from "izitoast";
+import { useParams } from "react-router";
+import { useEffect, useState } from "react";
 
 // Add Category page — form to create a new category with image upload, name, and order
 export default function AddCategory() {
   const [validationErrors, setValidationErrors] = useState({});
+
+  const categoryId = useParams().id;
+
+  const [categoryDetails, setCategoryDetails] = useState(null);
+
+  useEffect(() => {
+    async function getCategoryDetails() {
+      try {
+        const result = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}api/backend/categories/details/${categoryId}`,
+        );
+
+        if (result.data._status === true) {
+          setCategoryDetails(result);
+        }
+      } catch (error) {
+        console.error(error);
+        iziToast.error({
+          title: "Error",
+          message: "Something went wrong!",
+          position: "topRight",
+        });
+      }
+    }
+
+    if (categoryId) getCategoryDetails();
+  }, [categoryId]);
 
   const [imageUrl, setImageUrl] = useState(null);
   const handleImagePreview = (fileObj) => {
@@ -33,10 +61,18 @@ export default function AddCategory() {
     if (Object.keys(errors).length > 0) return;
 
     try {
-      const result = await axios.post(
-        "http://localhost:8000/api/backend/categories/create",
-        formData,
-      );
+      let result;
+      if (categoryId) {
+        result = await axios.put(
+          `${import.meta.env.VITE_SERVER_URL}api/backend/categories/update/${categoryId}`,
+          formData,
+        );
+      } else {
+        result = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}api/backend/categories/create`,
+          formData,
+        );
+      }
 
       if (result.data._status) {
         iziToast.success({
@@ -76,10 +112,11 @@ export default function AddCategory() {
       <div className="form-wrapper mt-10 mx-5 rounded-xl overflow-auto shadow-2xl">
         <div className="form-header border border-gray-200 dark:border-gray-700 py-5 px-6 rounded text-white bg-blue-600 dark:bg-blue-400 dark:text-white hover:bg-blue-700 dark:hover:bg-blue-500">
           <h3 className="text-2xl font-bold dark:text-white">
-            Add New Category
+            {categoryId ? "Update Category" : "Add New Category"}
           </h3>
         </div>
         <form
+          key={categoryId}
           noValidate
           onSubmit={(e) => {
             handleSubmit(e);
@@ -92,10 +129,16 @@ export default function AddCategory() {
           >
             <span className="ms-3">Image Upload</span>
             <figure className="bg-gray-300 h-60 w-60 rounded-xl p-2 relative">
-              {imageUrl ? (
+              {imageUrl || categoryDetails ? (
                 <img
                   className="w-full h-full object-cover rounded-xl"
-                  src={imageUrl}
+                  src={
+                    imageUrl
+                      ? imageUrl
+                      : import.meta.env.VITE_SERVER_URL +
+                        "uploads/category/" +
+                        categoryDetails.data._data.image
+                  }
                   alt="uploaded image"
                 />
               ) : (
@@ -128,6 +171,9 @@ export default function AddCategory() {
                   required
                   type="text"
                   name="name"
+                  defaultValue={
+                    categoryDetails ? categoryDetails.data._data.name : ""
+                  }
                   id="name"
                   placeholder="Enter category name"
                   className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -145,6 +191,9 @@ export default function AddCategory() {
                     onChange={(e) => handleErrors(e.target.name)}
                     required
                     name="order"
+                    defaultValue={
+                      categoryDetails ? categoryDetails.data._data.order : ""
+                    }
                     type="number"
                     id="order"
                     placeholder="Enter order number"
@@ -158,7 +207,9 @@ export default function AddCategory() {
                 </div>
               </div>
               <div className="self-end mr-10 border border-gray-200 dark:border-gray-700 py-2 px-4 rounded text-white bg-blue-600 dark:bg-blue-400 dark:text-white cursor-pointer hover:bg-blue-700 dark:hover:bg-blue-500">
-                <button className="cursor-pointer">Submit</button>
+                <button className="cursor-pointer">
+                  {categoryId ? "Update" : "Submit"}
+                </button>
               </div>
             </div>
           </div>

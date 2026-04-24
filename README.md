@@ -13,16 +13,16 @@ This admin panel demonstrates real-world frontend architecture — layout-based 
 - Layout-based routing using React Router 7
 - A `CommonLayout` component with a grid-based structure (side panel + header + content area)
 - A `SidePanel` with `NavLink`-based navigation, active route highlighting, lucide-react icons, and collapsible sub-menus (using `useState`)
-- A `Header` with dynamic breadcrumb navigation based on the current URL
+- A `Header` with dynamic breadcrumb navigation based on the current URL — automatically filters out MongoDB ObjectIDs from the breadcrumb path for clean display
 - A `Login` page at `/` with a split-layout design (email/password form + decorative image) — login button navigates to `/dashboard` via `NavLink`
 - A `Dashboard` page at `/dashboard` with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
 - View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action (where applicable), and bulk action buttons (Filter, Delete All, Change Status); View Product page is currently a placeholder
 - Add forms for Testimonial (image, name, message, rating, order), Why Choose Us (image, title, order), Colour (name, hex code, order), Material (name, order), Category (image upload, name, order — fully API-integrated), Sub Category (parent category dropdown, image, name, order), and Sub Sub Category (parent category + sub category dropdowns, image, name, order)
 - Add Product form with comprehensive fields: parent category, sub category, and sub sub category selectors, product name, product type, materials, colors, short description, long description, single image upload, multiple image uploads, price, actual price, and order
-- Add Category form with full functionality: Axios POST to backend API, image upload with live preview (`URL.createObjectURL`), client-side validation with real-time error clearing (`noValidate` + custom validation logic using `FormData`), and toast notifications (iziToast) for success/warning/error feedback including server-side validation error display
-- View Category page with full API integration: fetches categories from backend via Axios POST, displays data in a dynamic table with serial numbers, image rendering via `VITE_SERVER_URL` env variable and static file serving, status indicators (Active/Inactive), functional filter form (filter by category name and order with clear/apply, sends filter data to backend and resets pagination on apply), server-side pagination (sends current page to backend, renders page controls via `react-responsive-pagination`), empty state handling, and bulk action buttons (Filter, Delete All, Change Status)
+- Add/Edit Category form with full CRUD functionality: uses `useParams()` to detect edit mode (`category/update/:id` route), fetches existing category details for editing via `useEffect`, populates form with `defaultValue` and `key` prop for controlled re-rendering, uses `axios.post()` for create and `axios.put()` for update, image upload with live preview (`URL.createObjectURL`) that shows existing server image during edit or new upload preview, client-side validation with real-time error clearing (`noValidate` + custom validation logic using `FormData`), and toast notifications (iziToast) for success/warning/error feedback including server-side validation error display
+- View Category page with full API integration: fetches categories from backend via Axios POST, displays data in a dynamic table with serial numbers, image rendering via `VITE_SERVER_URL` env variable and static file serving, status indicators (Active/Inactive), edit action links that navigate to `category/update/:id` for inline editing, functional filter form (filter by category name and order with clear/apply, sends filter data to backend and resets pagination on apply), server-side pagination (sends current page to backend, renders page controls via `react-responsive-pagination`), empty state handling, and bulk action buttons (Filter, Delete All, Change Status)
 - iziToast CSS globally imported in `main.jsx` for toast notification styling
-- Environment variable configuration via `.env` file (`VITE_SERVER_URL`) for backend API and static asset URLs
+- Environment variable configuration via `.env` file (`VITE_SERVER_URL`) for backend API and static asset URLs — all API calls use `import.meta.env.VITE_SERVER_URL` (no hardcoded URLs)
 - Backend static file serving configured with `express.static` to serve uploaded images from the `/uploads` directory
 - Collapsible sidebar sections for all page categories (Add/View) with nested routes
 - All page routes use nested sub-pages: Dashboard, Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product
@@ -59,8 +59,8 @@ src/
     │   ├── AddMaterial.jsx         # Add Material page
     │   └── ViewMaterial.jsx        # View Materials page
     ├── category/
-    │   ├── AddCategory.jsx         # Add Category page (API integrated + validation)
-    │   └── ViewCategory.jsx        # View Categories page (API integrated + pagination + filter)
+    │   ├── AddCategory.jsx         # Add/Edit Category page (full CRUD — create + update via useParams)
+    │   └── ViewCategory.jsx        # View Categories page (API integrated + pagination + filter + edit links)
     ├── sub-category/
     │   ├── AddSubCategory.jsx      # Add Sub Category page
     │   └── ViewSubCategory.jsx     # View Sub Categories page
