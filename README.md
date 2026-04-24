@@ -129,10 +129,10 @@ The sub sub category feature provides three-level hierarchical categorization wi
 
 - **Hierarchical Structure**: Parent Category → Sub Category → Sub Sub Category
 - **Cascading Dropdowns**: Sub categories populate based on selected parent category
-- **Advanced Filtering**: Filter by name, parent category, and sub category
+- **Advanced Filtering**: Filter by name, parent category, and sub category (Apply-only filtering)
+- **Smart Dropdowns**: Real-time sub category population with Apply-only filter execution
 - **Image Upload**: Click-to-upload image interface (no dedicated button)
-- **Real-time Updates**: Sub category dropdowns update immediately on parent selection
-- **Controlled Components**: Form state management with validation
+- **Controlled Components**: Form state management with validation and error handling
 - **Pagination**: Server-side pagination for large datasets
 - **Bulk Actions**: Multi-select for status toggle and delete operations
 
@@ -148,11 +148,11 @@ The sub sub category feature provides three-level hierarchical categorization wi
 
 **ViewSubSubCategory.jsx**
 
-- Advanced filtering with cascading dropdowns
-- Server-side pagination
-- Bulk selection and actions
-- Image display with fallback handling
-- Responsive table design
+- Advanced filtering with cascading dropdowns (Apply-only filtering)
+- Server-side pagination with real-time dropdown population
+- Bulk selection and actions (status toggle, delete)
+- Image display with fallback handling and error management
+- Responsive table design with consistent UI patterns
 
 #### API Integration
 

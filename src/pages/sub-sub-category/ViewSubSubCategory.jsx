@@ -12,9 +12,10 @@ export default function ViewSubSubCategory() {
   const [subSubCategories, setSubSubCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [status, setStatus] = useState(false);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
+  const [formParentCategory, setFormParentCategory] = useState(""); // Track parent category in form for dropdown
+  const [status, setStatus] = useState(true);
 
   // Fetch categories for the filter dropdown
   useEffect(() => {
@@ -32,38 +33,6 @@ export default function ViewSubSubCategory() {
     }
     fetchCategories();
   }, []);
-
-  // Fetch sub categories when parent category filter changes
-  useEffect(() => {
-    async function fetchSubCategories() {
-      console.log(
-        "Filter: Fetching sub categories for parent:",
-        filterData.parent_category_id,
-      );
-      if (
-        filterData.parent_category_id &&
-        filterData.parent_category_id !== ""
-      ) {
-        try {
-          const result = await axios.post(
-            `${import.meta.env.VITE_SERVER_URL}api/backend/sub-sub-categories/sub-category`,
-            { parent_category_id: filterData.parent_category_id },
-          );
-          console.log("Filter: Sub categories API response:", result.data);
-          if (result.data._status === true) {
-            setSubCategories(result.data._data || []);
-            console.log("Filter: Sub categories set:", result.data._data);
-          }
-        } catch (error) {
-          console.error("Filter: Failed to fetch sub categories", error);
-        }
-      } else {
-        setSubCategories([]);
-        console.log("Filter: Sub categories cleared");
-      }
-    }
-    fetchSubCategories();
-  }, [filterData.parent_category_id]);
 
   const changeStatus = async () => {
     if (selectedRecord.length > 0) {
@@ -122,16 +91,40 @@ export default function ViewSubSubCategory() {
     }
   };
 
-  const applyFilter = (e) => {
+  const applyFilter = async (e) => {
     e.preventDefault();
     const form = e.target.closest("form");
+    const parentCategoryId = form.parentCategory.value;
+
     const obj = {
       name: form.subSubCategoryName.value,
-      parent_category_id: form.parentCategory.value,
+      parent_category_id: parentCategoryId,
       sub_category_id: form.subCategory.value,
     };
 
     console.log("Filter: Applying filter with data:", obj);
+
+    // If parent category is selected, fetch sub categories for the dropdown
+    if (parentCategoryId && parentCategoryId !== "") {
+      try {
+        const result = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}api/backend/sub-sub-categories/sub-category`,
+          { parent_category_id: parentCategoryId },
+        );
+        console.log("Filter: Sub categories fetched for apply:", result.data);
+        if (result.data._status === true) {
+          setSubCategories(result.data._data || []);
+        }
+      } catch (error) {
+        console.error(
+          "Filter: Failed to fetch sub categories for apply",
+          error,
+        );
+      }
+    } else {
+      setSubCategories([]);
+    }
+
     setFilterData(obj);
     setCurrentPage(1);
   };
@@ -205,17 +198,28 @@ export default function ViewSubSubCategory() {
                     className="border border-gray-700 w-55 p-2"
                     name="parentCategory"
                     id="parentCategory"
-                    onChange={(e) => {
+                    onChange={async (e) => {
                       const parentId = e.target.value;
-                      console.log(
-                        "Filter: Parent category changed to:",
-                        parentId,
-                      );
-                      setFilterData((prev) => ({
-                        ...prev,
-                        parent_category_id: parentId,
-                        sub_category_id: "",
-                      }));
+                      setFormParentCategory(parentId);
+
+                      if (parentId && parentId !== "") {
+                        try {
+                          const result = await axios.post(
+                            `${import.meta.env.VITE_SERVER_URL}api/backend/sub-sub-categories/sub-category`,
+                            { parent_category_id: parentId },
+                          );
+                          if (result.data._status === true) {
+                            setSubCategories(result.data._data || []);
+                          }
+                        } catch (error) {
+                          console.error(
+                            "Failed to fetch sub categories",
+                            error,
+                          );
+                        }
+                      } else {
+                        setSubCategories([]);
+                      }
                     }}
                   >
                     <option value="">All Categories</option>
@@ -232,7 +236,7 @@ export default function ViewSubSubCategory() {
                     className="border border-gray-700 w-55 p-2"
                     name="subCategory"
                     id="subCategory"
-                    disabled={!filterData.parent_category_id}
+                    disabled={!formParentCategory}
                   >
                     <option value="">All Sub Categories</option>
                     {subCategories.map((subCat) => (
@@ -251,6 +255,8 @@ export default function ViewSubSubCategory() {
                     e.target.closest("form").reset();
                     setFilterData({});
                     setSubCategories([]);
+                    setFormParentCategory("");
+                    setCurrentPage(1);
                   }}
                 >
                   Clear
