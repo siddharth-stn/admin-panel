@@ -44,8 +44,10 @@ createRoot(document.getElementById("root")).render(
           <Route path="choice/add-why-choose" element={<AddWhyChoose />} />
           <Route path="choice/view-why-choose" element={<ViewWhyChoose />} />
           <Route path="colour/add-colour" element={<AddColour />} />
+          <Route path="colour/update/:id" element={<AddColour />} />
           <Route path="colour/view-colour" element={<ViewColour />} />
           <Route path="material/add-material" element={<AddMaterial />} />
+          <Route path="material/update/:id" element={<AddMaterial />} />
           <Route path="material/view-material" element={<ViewMaterial />} />
           <Route path="category/add-category" element={<AddCategory />} />
           <Route path="category/update/:id" element={<AddCategory />} />

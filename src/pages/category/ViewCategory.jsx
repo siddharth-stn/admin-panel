@@ -1,4 +1,5 @@
 import axios from "axios";
+import iziToast from "izitoast";
 import { SquarePen, Funnel } from "lucide-react";
 import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
@@ -13,8 +14,113 @@ export default function ViewCategory() {
   const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [status, setStatus] = useState(false);
 
-  const changeStatus = () => {};
+  const changeStatus = async () => {
+    if (selectedRecord.length > 0) {
+      try {
+        const result = await axios.put(
+          `${import.meta.env.VITE_SERVER_URL}api/backend/categories/toggle-status`,
+          {
+            id: selectedRecord,
+          },
+        );
+
+        if (result.data._status === true) {
+          iziToast.success({
+            title: "Success",
+            message: result.data._message,
+            position: "topRight",
+          });
+
+          setSelectedRecord([]);
+          setStatus(!status);
+        } else {
+          iziToast.error({
+            title: "Failed",
+            message: result.data._message,
+            position: "topRight",
+          });
+        }
+      } catch (error) {
+        iziToast.error({
+          title: "Failed",
+          message: "Something went wrong!",
+          position: "topRight",
+        });
+        console.log(error);
+      }
+    }
+  };
+
+  const deleteSelected = () => {
+    if (selectedRecord.length > 0) {
+      iziToast.question({
+        timeout: 20000,
+        close: true,
+        overlay: true,
+        displayMode: "once",
+        id: "delete-confirm",
+        zindex: 999999,
+        title: "Are you sure?",
+        message: "Record once deleted can not be recovered",
+        position: "center",
+        buttons: [
+          [
+            "<button><b>Yes</b></button>",
+            async function (instance, toast) {
+              // Perform Delete
+              try {
+                const result = await axios.post(
+                  `${import.meta.env.VITE_SERVER_URL}api/backend/categories/delete`,
+                  {
+                    id: selectedRecord,
+                  },
+                );
+
+                if (result.data._status === true) {
+                  iziToast.success({
+                    title: "Success",
+                    message: result.data._message,
+                    position: "topRight",
+                  });
+
+                  setSelectedRecord([]);
+                  setStatus(!status);
+                } else {
+                  iziToast.error({
+                    title: "Failed",
+                    message: result.data._message,
+                    position: "topRight",
+                  });
+                }
+              } catch (error) {
+                iziToast.error({
+                  title: "Failed",
+                  message: "Something went wrong!",
+                  position: "topRight",
+                });
+                console.log(error);
+              }
+
+              instance.hide({ transitionOut: "fadeOut" }, toast);
+            },
+          ],
+          [
+            "<button><b>No</b></button>",
+            function (instance, toast) {
+              iziToast.info({
+                title: "Cancelled",
+                message: "Delete action cancelled",
+                position: "topRight",
+              });
+              instance.hide({ transitionOut: "fadeOut" }, toast);
+            },
+          ],
+        ],
+      });
+    }
+  };
 
   const singleCheckSelect = (id) => {
     if (selectedRecord.includes(id)) {
@@ -39,7 +145,7 @@ export default function ViewCategory() {
     const fetchCategories = async () => {
       try {
         const result = await axios.post(
-          "http://localhost:8000/api/backend/categories/view",
+          `${import.meta.env.VITE_SERVER_URL}api/backend/categories/view`,
           { page: currentPage, name: filterData.name, order: filterData.order },
         );
 
@@ -55,7 +161,7 @@ export default function ViewCategory() {
       }
     };
     fetchCategories();
-  }, [currentPage, filterData]);
+  }, [currentPage, filterData, status]);
 
   return (
     <>
@@ -136,13 +242,14 @@ export default function ViewCategory() {
               <button
                 disabled={selectedRecord.length === 0}
                 className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer not-disabled:hover:bg-amber-50 not-disabled:hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => deleteSelected()}
               >
                 Delete All
               </button>
               <button
                 disabled={selectedRecord.length === 0}
                 className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer not-disabled:hover:bg-amber-50 not-disabled:hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
-                onChange={() => changeStatus()}
+                onClick={() => changeStatus()}
               >
                 Change Status
               </button>
