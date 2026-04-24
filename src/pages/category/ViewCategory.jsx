@@ -11,29 +11,16 @@ export default function ViewCategory() {
   const [filterData, setFilterData] = useState({});
   const [selectedRecord, setSelectedRecord] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [enableDisable, setEnableDisable] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
+  const changeStatus = () => {};
+
   const singleCheckSelect = (id) => {
     if (selectedRecord.includes(id)) {
-      let finalData = selectedRecord.filter((elem) => {
-        if (elem !== id) {
-          return elem;
-        }
-      });
-      // console.log(finalData);
-      setSelectedRecord(finalData);
+      setSelectedRecord(selectedRecord.filter((elem) => elem !== id));
     } else {
       setSelectedRecord([...selectedRecord, id]);
-      // console.log([...selectedRecord, id]);
-    }
-
-    if (selectedRecord.length > 0) {
-      setEnableDisable(true);
-    } else {
-      setEnableDisable(false);
     }
   };
 
@@ -147,14 +134,15 @@ export default function ViewCategory() {
                 Filter
               </button>
               <button
-                disabled={enableDisable}
-                className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer hover:bg-amber-50 hover:text-black"
+                disabled={selectedRecord.length === 0}
+                className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer not-disabled:hover:bg-amber-50 not-disabled:hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Delete All
               </button>
               <button
-                disabled={enableDisable}
-                className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer hover:bg-amber-50 hover:text-black"
+                disabled={selectedRecord.length === 0}
+                className="ring ring-gray-800 rounded bg-gray-500 py-2 px-3 cursor-pointer not-disabled:hover:bg-amber-50 not-disabled:hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
+                onChange={() => changeStatus()}
               >
                 Change Status
               </button>
@@ -166,7 +154,24 @@ export default function ViewCategory() {
           <table className="w-full mt-2">
             <thead className="border-b">
               <tr>
-                <th className="py-3 px-4 text-center text-nowrap">Select</th>
+                <th className="py-3 px-4 text-center text-nowrap">
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={
+                      categories.length > 0 &&
+                      selectedRecord.length === categories.length
+                    }
+                    onChange={() => {
+                      if (selectedRecord.length === categories.length) {
+                        setSelectedRecord([]);
+                      } else {
+                        setSelectedRecord(categories.map((cat) => cat._id));
+                      }
+                    }}
+                  />
+                  Select
+                </th>
                 <th className="py-3 px-4 text-center text-nowrap">S.No.</th>
                 <th className="py-3 px-4 text-left text-nowrap">Name</th>
                 <th className="py-3 px-4 text-center text-nowrap">Image</th>
