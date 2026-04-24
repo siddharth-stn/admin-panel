@@ -17,10 +17,11 @@ This admin panel demonstrates real-world frontend architecture — layout-based 
 - A `Login` page at `/` with a split-layout design (email/password form + decorative image) — login button navigates to `/dashboard` via `NavLink`
 - A `Dashboard` page at `/dashboard` with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
 - View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action (where applicable), and bulk action buttons (Filter, Delete All, Change Status); Category, Colour, and Material view pages are fully API-integrated with server-side pagination, dynamic filtering, checkbox bulk selection, status toggle, and soft delete; View Product page is currently a placeholder
-- Add forms for Testimonial (image, name, message, rating, order), Why Choose Us (image, title, order), Colour (name, hex code, order — fully API-integrated with CRUD, edit mode via `colour/update/:id`, and validation), Material (name, order — fully API-integrated with CRUD, edit mode via `material/update/:id`, and validation), Category (image upload, name, order — fully API-integrated), Sub Category (parent category dropdown, image, name, order), and Sub Sub Category (parent category + sub category dropdowns, image, name, order)
+- Add forms for Testimonial (image, name, message, rating, order), Why Choose Us (image, title, order), Colour (name, hex code, order — fully API-integrated with CRUD, edit mode via `colour/update/:id`, and validation), Material (name, order — fully API-integrated with CRUD, edit mode via `material/update/:id`, and validation), Category (image upload, name, order — fully API-integrated), Sub Category (parent category dropdown, image, name, order — fully API-integrated with CRUD, validation, controlled components, and proper state management), and Sub Sub Category (parent category + sub category dropdowns, image, name, order)
 - Add Product form with comprehensive fields: parent category, sub category, and sub sub category selectors, product name, product type, materials, colors, short description, long description, single image upload, multiple image uploads, price, actual price, and order
 - Add/Edit Category form with full CRUD functionality: uses `useParams()` to detect edit mode (`category/update/:id` route), fetches existing category details for editing via `useEffect`, populates form with `defaultValue` and `key` prop for controlled re-rendering, uses `axios.post()` for create and `axios.put()` for update, image upload with live preview (`URL.createObjectURL`) that shows existing server image during edit or new upload preview, client-side validation with real-time error clearing (`noValidate` + custom validation logic using `FormData`), and toast notifications (iziToast) for success/warning/error feedback including server-side validation error display
 - View Category page with full API integration: fetches categories from backend via Axios POST, displays data in a dynamic table with serial numbers, image rendering via `VITE_SERVER_URL` env variable and static file serving, status indicators (Active/Inactive), edit action links that navigate to `category/update/:id` for inline editing, functional filter form (filter by category name and order with clear/apply, sends filter data to backend and resets pagination on apply), server-side pagination (sends current page to backend, renders page controls via `react-responsive-pagination`), empty state handling, select-all checkbox in table header (toggles all row checkboxes) and individual row checkboxes for bulk action buttons (Filter, Delete All, Change Status) that are disabled until rows are selected — disabled state derived directly from `selectedRecord.length === 0`, styled with Tailwind 4 `disabled:opacity-50`, `disabled:cursor-not-allowed`, and `not-disabled:hover:` variants for proper disabled UX
+- **Sub Category Management** (Fully Implemented): Complete CRUD functionality with hierarchical relationship to parent categories, featuring controlled components for form state management, parent category dropdown populated via API, image upload with preview, real-time validation, and proper state reset when navigating between add and edit modes; View Sub Category page includes advanced filtering by subcategory name and parent category dropdown, server-side pagination, bulk operations (status toggle, delete), and proper parent category display with population
 - iziToast CSS globally imported in `main.jsx` for toast notification styling
 - Environment variable configuration via `.env` file (`VITE_SERVER_URL`) for backend API and static asset URLs — all API calls use `import.meta.env.VITE_SERVER_URL` (no hardcoded URLs)
 - Backend static file serving configured with `express.static` to serve uploaded images from the `/uploads` directory
@@ -62,8 +63,8 @@ src/
     │   ├── AddCategory.jsx         # Add/Edit Category page (full CRUD — create + update via useParams)
     │   └── ViewCategory.jsx        # View Categories page (API integrated + pagination + filter + edit links)
     ├── sub-category/
-    │   ├── AddSubCategory.jsx      # Add Sub Category page
-    │   └── ViewSubCategory.jsx     # View Sub Categories page
+│   ├── AddSubCategory.jsx      # Add/Edit Sub Category page (full CRUD with controlled components)
+│   └── ViewSubCategory.jsx     # View Sub Categories page (API integrated with advanced filtering)
     ├── sub-sub-category/
     │   ├── AddSubSubCategory.jsx   # Add Sub Sub Category page
     │   └── ViewSubSubCategory.jsx  # View Sub Sub Categories page
@@ -74,17 +75,17 @@ src/
 
 ### Tech Stack
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| React | 19 | UI library |
-| Vite | 8 | Build tool & dev server |
-| Tailwind CSS | 4 | Utility-first CSS framework |
-| React Router | 7 | Client-side routing |
-| Axios | 1.15 | HTTP client for API requests |
-| iziToast | 1.4 | Toast notification library |
-| Lucide React | 1.0 | Icon library for UI icons |
-| react-responsive-pagination | 2.13 | Responsive pagination component |
-| ESLint | 9 | Code linting |
+| Technology                  | Version | Purpose                         |
+| --------------------------- | ------- | ------------------------------- |
+| React                       | 19      | UI library                      |
+| Vite                        | 8       | Build tool & dev server         |
+| Tailwind CSS                | 4       | Utility-first CSS framework     |
+| React Router                | 7       | Client-side routing             |
+| Axios                       | 1.15    | HTTP client for API requests    |
+| iziToast                    | 1.4     | Toast notification library      |
+| Lucide React                | 1.0     | Icon library for UI icons       |
+| react-responsive-pagination | 2.13    | Responsive pagination component |
+| ESLint                      | 9       | Code linting                    |
 
 ---
 
@@ -109,12 +110,12 @@ npm run dev
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start the Vite dev server with HMR |
-| `npm run build` | Build for production |
+| Command           | Description                          |
+| ----------------- | ------------------------------------ |
+| `npm run dev`     | Start the Vite dev server with HMR   |
+| `npm run build`   | Build for production                 |
 | `npm run preview` | Preview the production build locally |
-| `npm run lint` | Run ESLint |
+| `npm run lint`    | Run ESLint                           |
 
 ---
 
@@ -137,23 +138,23 @@ Throughout my tenure in administration, I constantly encountered inefficiencies 
 
 ### Technical Skills
 
-| Category | Skills |
-|----------|--------|
-| **Frontend** | HTML, CSS, JavaScript, React.js, Next.js, Tailwind CSS, Svelte |
-| **Backend** | Node.js, Express.js, MongoDB, REST APIs, JWT Authentication |
-| **Templating** | Pug (Jade) |
-| **Tools** | Git, GitHub, Vite, Webpack, ESLint |
+| Category        | Skills                                                                              |
+| --------------- | ----------------------------------------------------------------------------------- |
+| **Frontend**    | HTML, CSS, JavaScript, React.js, Next.js, Tailwind CSS, Svelte                      |
+| **Backend**     | Node.js, Express.js, MongoDB, REST APIs, JWT Authentication                         |
+| **Templating**  | Pug (Jade)                                                                          |
+| **Tools**       | Git, GitHub, Vite, Webpack, ESLint                                                  |
 | **Soft Skills** | Operational Strategy, Stakeholder Management, Crisis Resolution, Project Management |
 
 ### Coding Journey
 
-| Period | Phase | Focus |
-|--------|-------|-------|
-| 2020 | Foundations | HTML/CSS basics, The Odin Project |
-| 2021 | Frontend Growth | JavaScript, React, site replicas, games |
-| 2022 | Intermediate | Form validation, testing, portfolio |
-| 2023 | Backend & Full-Stack | Express APIs, authentication, Svelte, Namaste React |
-| 2026 | Advanced | Next.js, full-stack clones, MERN Stack, DSA, AI |
+| Period | Phase                | Focus                                               |
+| ------ | -------------------- | --------------------------------------------------- |
+| 2020   | Foundations          | HTML/CSS basics, The Odin Project                   |
+| 2021   | Frontend Growth      | JavaScript, React, site replicas, games             |
+| 2022   | Intermediate         | Form validation, testing, portfolio                 |
+| 2023   | Backend & Full-Stack | Express APIs, authentication, Svelte, Namaste React |
+| 2026   | Advanced             | Next.js, full-stack clones, MERN Stack, DSA, AI     |
 
 **GitHub Stats:** 72 public repositories | Active since June 2020 | Pull Shark badge earned
 
