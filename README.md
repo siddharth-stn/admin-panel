@@ -16,9 +16,9 @@ This admin panel demonstrates real-world frontend architecture — layout-based 
 - A `Header` with dynamic breadcrumb navigation based on the current URL — automatically filters out MongoDB ObjectIDs from the breadcrumb path for clean display
 - A `Login` page at `/` with a split-layout design (email/password form + decorative image) — login button navigates to `/dashboard` via `NavLink`
 - A `Dashboard` page at `/dashboard` with an overview section displaying color-coded stat cards (Users, Product, Category, Orders)
-- View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, and Sub Sub Category — each with select, S.No., relevant columns, status (Active/Inactive), edit action (where applicable), and bulk action buttons (Filter, Delete All, Change Status); Category, Colour, and Material view pages are fully API-integrated with server-side pagination, dynamic filtering, checkbox bulk selection, status toggle, and soft delete; View Product page is currently a placeholder
+- View pages with data tables for Testimonial, Why Choose Us, Colour, Material, Category, Sub Category, Sub Sub Category, and Product — each with select, S.No., relevant columns, status (Active/Inactive), edit action (where applicable), and bulk action buttons (Filter, Delete All, Change Status); Category, Colour, Material, and Product view pages are fully API-integrated with server-side pagination, dynamic filtering, checkbox bulk selection, status toggle, and soft delete
 - Add forms for Testimonial (image, name, message, rating, order), Why Choose Us (image, title, order), Colour (name, hex code, order — fully API-integrated with CRUD, edit mode via `colour/update/:id`, and validation), Material (name, order — fully API-integrated with CRUD, edit mode via `material/update/:id`, and validation), Category (image upload, name, order — fully API-integrated), Sub Category (parent category dropdown, image, name, order — fully API-integrated with CRUD, validation, controlled components, and proper state management), and Sub Sub Category (parent category + sub category dropdowns, image, name, order)
-- Add Product form with comprehensive fields: parent category, sub category, and sub sub category selectors, product name, product type, materials, colors, short description, long description, single image upload, multiple image uploads, price, actual price, and order
+- **Product Management** (Fully Implemented): Complete CRUD functionality with API integration — Add/Edit Product form with 3-level cascading category dropdowns (parent → sub → sub-sub), multi-select for materials and colors, product type (Featured/On Sale/New Arrivals) and best selling selectors, single image upload with preview, multiple image upload (up to 12) with gallery preview, product code, dimension, estimated delivery, short/long descriptions, sale price, actual price, and order; uses `useParams()` for edit mode detection (`product/update/:id`), fetches product details with populated references for editing, client-side validation with real-time error clearing, FormData with multipart file uploads via Axios; View Product page with full API integration including product table (name, image, category, type, prices, order, status), server-side pagination, filter by product name and parent category dropdown, checkbox bulk selection with select-all, bulk delete with iziToast confirmation dialog, bulk status toggle, and edit action links
 - Add/Edit Category form with full CRUD functionality: uses `useParams()` to detect edit mode (`category/update/:id` route), fetches existing category details for editing via `useEffect`, populates form with `defaultValue` and `key` prop for controlled re-rendering, uses `axios.post()` for create and `axios.put()` for update, image upload with live preview (`URL.createObjectURL`) that shows existing server image during edit or new upload preview, client-side validation with real-time error clearing (`noValidate` + custom validation logic using `FormData`), and toast notifications (iziToast) for success/warning/error feedback including server-side validation error display
 - View Category page with full API integration: fetches categories from backend via Axios POST, displays data in a dynamic table with serial numbers, image rendering via `VITE_SERVER_URL` env variable and static file serving, status indicators (Active/Inactive), edit action links that navigate to `category/update/:id` for inline editing, functional filter form (filter by category name and order with clear/apply, sends filter data to backend and resets pagination on apply), server-side pagination (sends current page to backend, renders page controls via `react-responsive-pagination`), empty state handling, select-all checkbox in table header (toggles all row checkboxes) and individual row checkboxes for bulk action buttons (Filter, Delete All, Change Status) that are disabled until rows are selected — disabled state derived directly from `selectedRecord.length === 0`, styled with Tailwind 4 `disabled:opacity-50`, `disabled:cursor-not-allowed`, and `not-disabled:hover:` variants for proper disabled UX
 - **Sub Category Management** (Fully Implemented): Complete CRUD functionality with hierarchical relationship to parent categories, featuring controlled components for form state management, parent category dropdown populated via API, image upload with preview, real-time validation, and proper state reset when navigating between add and edit modes; View Sub Category page includes advanced filtering by subcategory name and parent category dropdown, server-side pagination, bulk operations (status toggle, delete), and proper parent category display with population
@@ -69,8 +69,8 @@ src/
     │   ├── AddSubSubCategory.jsx   # Add/Edit Sub Sub Category page (full CRUD with hierarchical dropdowns)
     │   └── ViewSubSubCategory.jsx  # View Sub Sub Categories page (API integrated with cascading filters)
     └── product/
-        ├── AddProduct.jsx          # Add Product page (comprehensive multi-field form)
-        └── ViewProduct.jsx         # View Products page (placeholder)
+        ├── AddProduct.jsx          # Add/Edit Product page (full CRUD — create + update via useParams, cascading dropdowns, multi-file upload)
+        └── ViewProduct.jsx         # View Products page (API integrated + pagination + filter + bulk actions + edit links)
 ```
 
 ### Tech Stack
@@ -191,6 +191,82 @@ await axios.post("/api/backend/sub-sub-categories/create", formData);
 - **Tailwind CSS**: Utility-first styling
 - **iziToast**: User notifications
 - **Lucide React**: Consistent iconography
+
+### Product Management
+
+The product feature is the most comprehensive module in the admin panel, featuring multi-level cascading dropdowns, multi-select fields, and dual image upload (single + gallery).
+
+#### Key Features
+
+- **3-Level Cascading Dropdowns**: Parent Category → Sub Category → Sub Sub Category, each level populating based on the previous selection
+- **Multi-Select Fields**: Materials and Colors support multiple selections (hold Ctrl/Cmd)
+- **Product Type & Best Selling**: Dropdown selectors for product classification (Featured/On Sale/New Arrivals) and best selling status (Yes/No)
+- **Dual Image Upload**: Single main image + up to 12 gallery images with preview
+- **Rich Product Details**: Product code, dimension, estimated delivery, short description, long description
+- **Pricing**: Sale price and actual price fields
+- **Full CRUD**: Create and update modes via URL params (`product/update/:id`)
+- **Server-Side Pagination**: Page-based API calls with total page count
+- **Filtering**: Filter by product name (text search) and parent category (dropdown)
+- **Bulk Actions**: Multi-select checkboxes with select-all, bulk delete with confirmation dialog, bulk status toggle
+
+#### Components
+
+**AddProduct.jsx**
+
+- 3-level cascading category dropdowns populated via API
+- Multi-select for materials and colors (fetched from API on mount)
+- Single image upload with preview + multiple image upload with gallery preview
+- Client-side validation for all required fields with real-time error clearing
+- FormData submission with multipart file uploads
+- Edit mode: fetches product details with populated references, pre-fills all form fields including multi-selects
+
+**ViewProduct.jsx**
+
+- Product table with columns: Select, S.No., Name, Image, Category, Type, Sale Price, Actual Price, Order, Status, Action
+- Server-side pagination via `react-responsive-pagination`
+- Filter form with product name text input and parent category dropdown
+- Checkbox bulk selection with select-all in table header
+- Bulk delete with iziToast confirmation dialog (Yes/No)
+- Bulk status toggle (Active/Inactive)
+- Edit links navigating to `/product/update/:id`
+
+#### API Integration
+
+```javascript
+// Fetch dropdown data on mount
+await Promise.all([
+  axios.post("/api/backend/products/parent-category"),
+  axios.post("/api/backend/products/material"),
+  axios.post("/api/backend/products/color"),
+]);
+
+// Cascading: fetch sub-categories when parent changes
+await axios.post("/api/backend/products/sub-category", {
+  parent_category_id: selectedParentId,
+});
+
+// Cascading: fetch sub-sub-categories when sub-category changes
+await axios.post("/api/backend/products/sub-sub-category", {
+  sub_category_id: selectedSubId,
+});
+
+// Create product with FormData (multipart)
+const fd = new FormData();
+fd.append("name", name);
+fd.append("image", imageFile);           // single image
+imageFiles.forEach(f => fd.append("images", f));  // multiple images
+fd.append("color_ids", colorId);          // repeated for each selected
+fd.append("material_ids", materialId);    // repeated for each selected
+// ... all other fields
+await axios.post("/api/backend/products/create", fd);
+
+// View with pagination and filters
+await axios.post("/api/backend/products/view", {
+  page: 1,
+  name: "search term",
+  parent_category_id: "filter_id",
+});
+```
 
 ---
 

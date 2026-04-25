@@ -74,6 +74,7 @@ createRoot(document.getElementById("root")).render(
             element={<AddSubSubCategory />}
           />
           <Route path="product/add-product" element={<AddProduct />} />
+          <Route path="product/update/:id" element={<AddProduct />} />
           <Route path="product/view-product" element={<ViewProduct />} />
         </Route>
       </Routes>
