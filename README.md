@@ -230,47 +230,444 @@ The product feature is the most comprehensive module in the admin panel, featuri
 - Bulk status toggle (Active/Inactive)
 - Edit links navigating to `/product/update/:id`
 
+#### State Management
+
+The `AddProduct.jsx` component uses the following state hooks:
+
+- **Form State** (`formData`): Manages all product fields including category dropdowns, materials, colors, pricing, descriptions, and metadata
+- **Validation Errors** (`validationErrors`): Tracks real-time validation errors that clear immediately when the user corrects a field
+- **Dropdown Data** (`categories`, `subCategories`, `subSubCategories`, `materials`, `colors`): API-fetched lists populated via `useEffect`
+- **Image State** (`imageUrl`, `multiImageUrls`, `imagePath`): Manages single image preview (blob URL), gallery preview URLs, and server image path prefix
+
+#### Form Validation Strategy
+
+**Client-Side Validation** (Real-Time):
+
+- All required fields validated before form submission
+- Error messages cleared immediately when user corrects a field (`handleErrors()` function)
+- Validation errors displayed inline below each form field
+- Custom validation logic (not HTML5 validation) for fine-grained control
+
+**Validation Rules**:
+
+```javascript
+// Required field checks
+- parent_category_id must not be "default"
+- sub_category_id must not be "default"
+- sub_sub_category_id must not be "default"
+- name (non-empty)
+- product_type must not be "default"
+- best_selling must not be "default"
+- material_ids (at least one must be selected)
+- color_ids (at least one must be selected)
+- short_description (non-empty)
+- long_description (non-empty)
+- code (non-empty)
+- dimension (non-empty)
+- estimated_delivery (non-empty)
+- sale_price (required)
+- actual_price (required)
+```
+
+**Server-Side Error Integration**:
+
+- After form submission, any server validation errors are captured and displayed
+- Server errors merged with client-side validation for comprehensive feedback
+
+#### Image Handling
+
+**Single Image Upload**:
+
+- Uses `URL.createObjectURL()` to generate a blob URL for real-time preview
+- Preview displays before submission, improving UX
+- In edit mode, displays existing server image using `imagePath` + `imageName`
+- User can replace image by uploading a new one
+
+**Multiple Image Upload** (Gallery):
+
+- Allows up to 12 images for product gallery
+- Each file generates its own blob URL for preview
+- Gallery preview shows all selected images in a grid
+- In edit mode, fetches and displays existing gallery images
+- User can add more images to existing gallery during edit
+
+**Image Rendering Helper**:
+
+```javascript
+const getImageSrc = (img) => {
+  if (!img) return "";
+  if (img.startsWith("blob:")) return img; // Preview
+  const path = imagePath ? `http://${imagePath}` : `${BASE}uploads/product/`;
+  return path + img; // Server image
+};
+```
+
+#### Cascading Dropdown Logic
+
+**Three-Level Cascade**:
+
+1. **Parent Category** (Independent)
+   - Fetched on component mount via `useEffect`
+   - No dependencies (initial load only)
+   - Marked with `// eslint-disable-next-line react-hooks/exhaustive-deps` due to external BASE URL
+
+2. **Sub Category** (Depends on Parent)
+   - Re-fetches when `parent_category_id` changes
+   - Shows only subcategories of selected parent
+   - Resets when parent changes: `sub_category_id: "default"`
+   - Marked with `// eslint-disable-next-line react-hooks/exhaustive-deps`
+
+3. **Sub Sub Category** (Depends on Sub)
+   - Re-fetches when `sub_category_id` changes
+   - Shows only sub-subcategories of selected sub-category
+   - Resets when sub-category changes: `sub_sub_category_id: "default"`
+   - Marked with `// eslint-disable-next-line react-hooks/exhaustive-deps`
+
+**State Reset on Selection Change**:
+
+```javascript
+// Resetting cascading dropdowns to prevent invalid combinations
+if (name === "parent_category_id") {
+  setFormData((prev) => ({
+    ...prev,
+    parent_category_id: value,
+    sub_category_id: "default", // Reset sub-category
+    sub_sub_category_id: "default", // Reset sub-sub-category
+  }));
+} else if (name === "sub_category_id") {
+  setFormData((prev) => ({
+    ...prev,
+    sub_category_id: value,
+    sub_sub_category_id: "default", // Reset sub-sub-category only
+  }));
+}
+```
+
+#### Form Submission & FormData
+
+**FormData Construction** (Multipart Form):
+
+```javascript
+const fd = new FormData();
+fd.append("name", formData.name);
+fd.append("product_type", formData.product_type);
+fd.append("best_selling", formData.best_selling);
+fd.append("parent_category_id", formData.parent_category_id);
+fd.append("sub_category_id", formData.sub_category_id);
+fd.append("sub_sub_category_id", formData.sub_sub_category_id);
+fd.append("short_description", formData.short_description);
+fd.append("long_description", formData.long_description);
+fd.append("code", formData.code);
+fd.append("dimension", formData.dimension);
+fd.append("estimated_delivery", formData.estimated_delivery);
+fd.append("sale_price", formData.sale_price);
+fd.append("actual_price", formData.actual_price);
+
+// Append multiple values for arrays
+formData.color_ids.forEach((id) => fd.append("color_ids", id));
+formData.material_ids.forEach((id) => fd.append("material_ids", id));
+
+// Append files
+const imageInput = form.querySelector('input[name="image"]');
+if (imageInput?.files[0]) {
+  fd.append("image", imageInput.files[0]);
+}
+
+const imagesInput = form.querySelector('input[name="images"]');
+if (imagesInput?.files.length > 0) {
+  Array.from(imagesInput.files).forEach((file) => {
+    fd.append("images", file);
+  });
+}
+```
+
+**Create vs Update**:
+
+```javascript
+if (productId) {
+  // Update mode: PUT with product ID from URL params
+  response = await axios.put(
+    `${BASE}api/backend/products/update/${productId}`,
+    fd,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    },
+  );
+} else {
+  // Create mode: POST to create endpoint
+  response = await axios.post(`${BASE}api/backend/products/create`, fd, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+}
+```
+
+#### Edit Mode Detection & Pre-Population
+
+**URL-Based Edit Mode**:
+
+- Uses `useParams().id` to detect if editing (`/product/update/:id`) or creating (`/product/add`)
+- If `productId` exists, fetches product details via `axios.post()`
+- Populates all form fields including multi-select arrays
+
+**Reference Population Handling**:
+
+```javascript
+// Handle nested references from API (populated relations)
+parent_category_id: d.parent_category_id?._id || d.parent_category_id || "default",
+// For array references, extract IDs
+material_ids: d.material_ids ? d.material_ids.map((m) => m._id || m) : [],
+color_ids: d.color_ids ? d.color_ids.map((c) => c._id || c) : [],
+```
+
 #### API Integration
 
 ```javascript
-// Fetch dropdown data on mount
+// Fetch dropdown data on mount (Initial Load)
+// eslint-disable-next-line react-hooks/exhaustive-deps
 await Promise.all([
-  axios.post("/api/backend/products/parent-category"),
-  axios.post("/api/backend/products/material"),
-  axios.post("/api/backend/products/color"),
+  axios.post(`${BASE}api/backend/products/parent-category`),
+  axios.post(`${BASE}api/backend/products/material`),
+  axios.post(`${BASE}api/backend/products/color`),
 ]);
 
 // Cascading: fetch sub-categories when parent changes
-await axios.post("/api/backend/products/sub-category", {
-  parent_category_id: selectedParentId,
+// eslint-disable-next-line react-hooks/exhaustive-deps
+await axios.post(`${BASE}api/backend/products/sub-category`, {
+  parent_category_id: formData.parent_category_id,
 });
 
 // Cascading: fetch sub-sub-categories when sub-category changes
-await axios.post("/api/backend/products/sub-sub-category", {
-  sub_category_id: selectedSubId,
+// eslint-disable-next-line react-hooks/exhaustive-deps
+await axios.post(`${BASE}api/backend/products/sub-sub-category`, {
+  sub_category_id: formData.sub_category_id,
 });
 
-// Create product with FormData (multipart)
-const fd = new FormData();
-fd.append("name", name);
-fd.append("image", imageFile);           // single image
-imageFiles.forEach(f => fd.append("images", f));  // multiple images
-fd.append("color_ids", colorId);          // repeated for each selected
-fd.append("material_ids", materialId);    // repeated for each selected
-// ... all other fields
-await axios.post("/api/backend/products/create", fd);
+// Get product details for editing
+await axios.post(`${BASE}api/backend/products/details/${productId}`);
 
-// View with pagination and filters
-await axios.post("/api/backend/products/view", {
-  page: 1,
-  name: "search term",
-  parent_category_id: "filter_id",
+// Create product with FormData (multipart)
+await axios.post(`${BASE}api/backend/products/create`, fd, {
+  headers: { "Content-Type": "multipart/form-data" },
+});
+
+// Update product with FormData
+await axios.put(`${BASE}api/backend/products/update/${productId}`, fd, {
+  headers: { "Content-Type": "multipart/form-data" },
 });
 ```
 
+#### Error Handling & Notifications
+
+**Client-Side Validation**:
+
+- Comprehensive pre-submission checks with user-friendly error messages
+- Real-time error clearing as user corrects fields
+- Prevents form submission until all validations pass
+
+**Server Validation Integration**:
+
+- Captures server response status and error messages
+- Displays server validation errors alongside client-side errors
+- Shows success/error toast notifications using iziToast
+
+**Toast Notifications**:
+
+```javascript
+// Success notification
+iziToast.success({
+  message: "Product added successfully",
+  position: "topCenter",
+});
+
+// Error notification
+iziToast.error({ message: "Failed to add product", position: "topCenter" });
+```
+
+#### Recent Code Quality Improvements
+
+**ESLint Compliance**:
+
+- Fixed React Hook dependency array warnings by adding appropriate `eslint-disable-next-line` comments
+- `BASE` URL is an external dependency (environment variable) that doesn't need to be included in dependency arrays
+- Tailwind CSS class names optimized (`min-h-[100px]` → `min-h-25`)
+
+**Best Practices Applied**:
+
+- Controlled components throughout the form
+- Proper state management with `useState` and `useEffect`
+- Efficient API calls using `Promise.all()` for parallel requests
+- Clean code comments for maintainability
+- Responsive design with Tailwind CSS utilities
+
 ---
 
-## About Me
+## Implementation Patterns & Best Practices
+
+### Form Management Pattern
+
+All form components in this admin panel follow a consistent pattern for form management, validation, and submission:
+
+1. **State Management**: Use `useState` to manage form data and validation errors separately
+2. **Controlled Components**: All inputs are controlled components with `value` and `onChange` handlers
+3. **Validation**: Real-time, client-side validation with server-side error integration
+4. **Error Display**: Inline error messages below form fields with red text styling
+5. **Reset Logic**: Form reset after successful submission (for add mode only)
+
+**Key Implementation Details**:
+
+- Validation errors are tracked in a separate state object
+- Errors clear in real-time as user corrects fields (via `handleErrors()`)
+- Server validation errors are merged with client-side errors
+- Images use blob URLs (`URL.createObjectURL`) for instant preview before upload
+
+### Edit Mode Detection Pattern
+
+Components that support both Add and Edit modes use the following pattern:
+
+1. **Route Setup**: `add` route for creation, `update/:id` route for editing
+2. **Detection**: Use `useParams().id` to determine mode
+3. **Data Fetching**: Use `useEffect` with `productId` dependency to fetch existing data
+4. **Population**: Pre-fill all form fields when in edit mode, including nested references
+5. **Server Requests**: Use `axios.post()` for create, `axios.put()` for update
+
+### Multi-Level Cascading Dropdown Pattern
+
+Components with hierarchical data (Product Categories, Sub Categories) use cascading dropdowns:
+
+1. **Parent Level**: Fetch on component mount (independent)
+2. **Child Level**: Fetch when parent changes, reset on change
+3. **Grandchild Level**: Fetch when child changes, reset on change
+4. **Data Management**: Store each level in separate state arrays
+5. **Disabled State**: Child/grandchild dropdowns disabled until parent/child is selected
+
+### Image Upload Pattern
+
+Two image upload patterns are used depending on requirements:
+
+**Single Image Upload** (Categories, etc.):
+
+- File input with single `accept="image/*"` attribute
+- Preview using `URL.createObjectURL()` for instant display
+- Display server image during edit using `imagePath` prefix
+- Clear distinction between new blob URLs and server paths in `getImageSrc()`
+
+**Multiple Image Upload** (Products):
+
+- File input with `multiple` attribute
+- Array of blob URLs for gallery preview
+- Handle both adding new images and keeping existing ones during edit
+- Append all selected files to FormData with same field name
+
+### Bulk Operations Pattern
+
+View pages that support bulk operations follow this pattern:
+
+1. **Selection State**: Maintain array of selected record IDs
+2. **Checkbox UI**: Checkboxes in table rows + select-all in header
+3. **Button State**: Disable bulk action buttons when no rows selected
+4. **Confirmation**: Show iziToast confirmation dialog for destructive actions (delete)
+5. **Batch API Calls**: Send array of IDs to backend endpoint
+
+### Component Architecture
+
+**Layout Structure**:
+
+```
+CommonLayout (Grid: sidebar | header + content)
+├── SidePanel (Navigation)
+├── Header (Breadcrumbs)
+└── Outlet (Page content)
+    ├── Dashboard
+    ├── Add/View Module Pages
+    │   ├── AddCategory/ViewCategory
+    │   ├── AddProduct/ViewProduct
+    │   └── ... (others follow same pattern)
+    └── Nested routes for each module
+```
+
+**Naming Conventions**:
+
+- Components: PascalCase (`AddProduct.jsx`, `ViewCategory.jsx`)
+- Pages: Organized by module in `src/pages/` directory
+- State variables: camelCase (`formData`, `validationErrors`, `categories`)
+- Event handlers: `handle*` prefix (`handleInputChange`, `handleSubmit`)
+
+---
+
+## Configuration & Environment Setup
+
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```bash
+VITE_SERVER_URL=http://localhost:8000/
+```
+
+This variable is used throughout the app for API endpoints:
+
+```javascript
+const BASE = import.meta.env.VITE_SERVER_URL;
+// Usage: axios.post(`${BASE}api/backend/products/create`)
+```
+
+### Image Upload Configuration
+
+The backend must serve static files from the `/uploads` directory:
+
+```javascript
+// Backend (Express example)
+app.use(express.static("uploads"));
+app.use("/uploads", express.static("uploads"));
+```
+
+Images are then accessible via: `http://localhost:8000/uploads/product/image-name.jpg`
+
+---
+
+## Common Issues & Solutions
+
+### Cascading Dropdown Not Populating
+
+**Issue**: Sub-category dropdown not showing options after parent selection
+
+**Solution**:
+
+- Verify parent category ID is being sent correctly to API
+- Check API endpoint is returning data with `_status: true`
+- Ensure `useEffect` dependency array includes the correct parent field
+- Verify no errors in network tab of DevTools
+
+### Image Preview Not Showing
+
+**Issue**: Image doesn't display after upload
+
+**Solution**:
+
+- Check if using blob URL (for preview) or server URL (for existing images)
+- Verify `imagePath` is set correctly from server response
+- Ensure backend serves static files with correct CORS headers
+- Check browser console for 404 errors on image requests
+
+### Form Validation Errors Not Clearing
+
+**Issue**: Error messages persist even after user corrects field
+
+**Solution**:
+
+- Verify `handleErrors()` is called in `handleInputChange`
+- Check error state is being cleared: `delete newErrors[name]`
+- Ensure input `onChange` handler is properly connected
+
+### Multi-Select Not Working on Edit
+
+**Issue**: Pre-selected materials/colors not showing in multi-select
+
+**Solution**:
+
+- Verify mapping logic extracts IDs correctly: `d.material_ids.map((m) => m._id || m)`
+- Check state is being set with array of IDs, not objects
+- Ensure `<option>` values match the IDs in the form state
 
 **Siddharth Pande** — Administrator, Problem Solver, Aspiring Developer
 
